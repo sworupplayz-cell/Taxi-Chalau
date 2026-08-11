@@ -1,0 +1,4215 @@
+{
+  "schemaVersion": 1,
+  "generatedFrom": "public/assets/environment/roads",
+  "inspectionScale": 1,
+  "currentGameScale": 2,
+  "sharedTexture": "assets/environment/roads/Textures/colormap.png",
+  "assetCount": 72,
+  "assets": [
+    {
+      "file": "bridge-pillar-wide.glb",
+      "path": "assets/environment/roads/bridge-pillar-wide.glb",
+      "geometryClass": "bridge support",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 80,
+      "triangleCount": 40,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.14,
+        0.5,
+        0.14
+      ],
+      "dimensionsAtCurrentScale": [
+        0.28,
+        1.0,
+        0.28
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.1,
+        "boundsXZ": [
+          -0.0575,
+          0.0575,
+          -0.0575,
+          0.0575
+        ],
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "bridge-pillar.glb",
+      "path": "assets/environment/roads/bridge-pillar.glb",
+      "geometryClass": "bridge support",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 80,
+      "triangleCount": 40,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.1,
+        0.5,
+        0.1
+      ],
+      "dimensionsAtCurrentScale": [
+        0.2,
+        1.0,
+        0.2
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.1,
+        "boundsXZ": [
+          -0.0375,
+          0.0375,
+          -0.0375,
+          0.0375
+        ],
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "construction-barrier.glb",
+      "path": "assets/environment/roads/construction-barrier.glb",
+      "geometryClass": "construction prop (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 96,
+      "triangleCount": 60,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.105,
+        0.11875,
+        0.225
+      ],
+      "dimensionsAtCurrentScale": [
+        0.21,
+        0.2375,
+        0.45
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.11875,
+        "boundsXZ": [
+          -0.03375,
+          0.03375,
+          -0.1125,
+          0.1125
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.11249999701976776,
+            "span": [
+              -0.03375,
+              0.03375
+            ],
+            "width": 0.0675
+          },
+          "south": {
+            "coordinate": -0.11249999701976776,
+            "span": [
+              -0.03375,
+              0.03375
+            ],
+            "width": 0.0675
+          }
+        }
+      }
+    },
+    {
+      "file": "construction-cone.glb",
+      "path": "assets/environment/roads/construction-cone.glb",
+      "geometryClass": "construction prop",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 104,
+      "triangleCount": 66,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.075,
+        0.09375,
+        0.075
+      ],
+      "dimensionsAtCurrentScale": [
+        0.15,
+        0.1875,
+        0.15
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01875,
+        "boundsXZ": [
+          -0.0375,
+          0.0375,
+          -0.0375,
+          0.0375
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.03750000149011612,
+            "span": [
+              -0.0375,
+              0.0375
+            ],
+            "width": 0.075
+          },
+          "south": {
+            "coordinate": -0.03750000149011612,
+            "span": [
+              -0.0375,
+              0.0375
+            ],
+            "width": 0.075
+          },
+          "east": {
+            "coordinate": 0.03750000149011612,
+            "span": [
+              -0.0375,
+              0.0375
+            ],
+            "width": 0.075
+          },
+          "west": {
+            "coordinate": -0.03750000149011612,
+            "span": [
+              -0.0375,
+              0.0375
+            ],
+            "width": 0.075
+          }
+        }
+      }
+    },
+    {
+      "file": "construction-light.glb",
+      "path": "assets/environment/roads/construction-light.glb",
+      "geometryClass": "construction prop",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 176,
+      "triangleCount": 100,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.075,
+        0.23375,
+        0.075
+      ],
+      "dimensionsAtCurrentScale": [
+        0.15,
+        0.4675,
+        0.15
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01875,
+        "boundsXZ": [
+          -0.0375,
+          0.0375,
+          -0.0375,
+          0.0375
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.03750000149011612,
+            "span": [
+              -0.0375,
+              0.0375
+            ],
+            "width": 0.075
+          },
+          "south": {
+            "coordinate": -0.03750000149011612,
+            "span": [
+              -0.0375,
+              0.0375
+            ],
+            "width": 0.075
+          },
+          "east": {
+            "coordinate": 0.03750000149011612,
+            "span": [
+              -0.0375,
+              0.0375
+            ],
+            "width": 0.075
+          },
+          "west": {
+            "coordinate": -0.03750000149011612,
+            "span": [
+              -0.0375,
+              0.0375
+            ],
+            "width": 0.075
+          }
+        }
+      }
+    },
+    {
+      "file": "light-curved-cross.glb",
+      "path": "assets/environment/roads/light-curved-cross.glb",
+      "geometryClass": "lighting prop",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 448,
+      "triangleCount": 270,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.4,
+        0.675,
+        0.4
+      ],
+      "dimensionsAtCurrentScale": [
+        0.8,
+        1.35,
+        0.8
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.675,
+        "boundsXZ": [
+          -0.2,
+          0.2,
+          -0.2,
+          0.2
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.20000000298023224,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "south": {
+            "coordinate": -0.20000000298023224,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "east": {
+            "coordinate": 0.20000000298023224,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "west": {
+            "coordinate": -0.20000000298023224,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          }
+        }
+      }
+    },
+    {
+      "file": "light-curved-double.glb",
+      "path": "assets/environment/roads/light-curved-double.glb",
+      "geometryClass": "lighting prop",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 250,
+      "triangleCount": 152,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.05,
+        0.675,
+        0.4
+      ],
+      "dimensionsAtCurrentScale": [
+        0.1,
+        1.35,
+        0.8
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.675,
+        "boundsXZ": [
+          -0.025,
+          0.025,
+          -0.2,
+          0.2
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.20000000298023224,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "south": {
+            "coordinate": -0.20000000298023224,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "east": {
+            "coordinate": 0.02500000037252903,
+            "span": [
+              -0.2,
+              0.2
+            ],
+            "width": 0.4
+          },
+          "west": {
+            "coordinate": -0.02500000037252903,
+            "span": [
+              -0.2,
+              0.2
+            ],
+            "width": 0.4
+          }
+        }
+      }
+    },
+    {
+      "file": "light-curved.glb",
+      "path": "assets/environment/roads/light-curved.glb",
+      "geometryClass": "lighting prop",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 156,
+      "triangleCount": 92,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.05,
+        0.675,
+        0.225
+      ],
+      "dimensionsAtCurrentScale": [
+        0.1,
+        1.35,
+        0.45
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.675,
+        "boundsXZ": [
+          -0.025,
+          0.025,
+          -0.2,
+          -0.1
+        ],
+        "connectionEdges": {
+          "south": {
+            "coordinate": -0.20000000298023224,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "east": {
+            "coordinate": 0.02500000037252903,
+            "span": [
+              -0.2,
+              -0.1
+            ],
+            "width": 0.1
+          },
+          "west": {
+            "coordinate": -0.02500000037252903,
+            "span": [
+              -0.2,
+              -0.1
+            ],
+            "width": 0.1
+          }
+        }
+      }
+    },
+    {
+      "file": "light-square-cross.glb",
+      "path": "assets/environment/roads/light-square-cross.glb",
+      "geometryClass": "lighting prop",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 236,
+      "triangleCount": 134,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.425,
+        0.6,
+        0.425
+      ],
+      "dimensionsAtCurrentScale": [
+        0.85,
+        1.2,
+        0.85
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.6,
+        "boundsXZ": [
+          -0.2125,
+          0.2125,
+          -0.2125,
+          0.2125
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.21249999105930328,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "south": {
+            "coordinate": -0.21249999105930328,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "east": {
+            "coordinate": 0.21249999105930328,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "west": {
+            "coordinate": -0.21249999105930328,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          }
+        }
+      }
+    },
+    {
+      "file": "light-square-double.glb",
+      "path": "assets/environment/roads/light-square-double.glb",
+      "geometryClass": "lighting prop",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 150,
+      "triangleCount": 88,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.05,
+        0.6,
+        0.425
+      ],
+      "dimensionsAtCurrentScale": [
+        0.1,
+        1.2,
+        0.85
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.6,
+        "boundsXZ": [
+          -0.025,
+          0.025,
+          -0.2125,
+          0.2125
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.21249999105930328,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "south": {
+            "coordinate": -0.21249999105930328,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "east": {
+            "coordinate": 0.02500000037252903,
+            "span": [
+              -0.2125,
+              0.2125
+            ],
+            "width": 0.425
+          },
+          "west": {
+            "coordinate": -0.02500000409781933,
+            "span": [
+              -0.2125,
+              0.2125
+            ],
+            "width": 0.425
+          }
+        }
+      }
+    },
+    {
+      "file": "light-square.glb",
+      "path": "assets/environment/roads/light-square.glb",
+      "geometryClass": "lighting prop",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 106,
+      "triangleCount": 60,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.05,
+        0.6,
+        0.2375
+      ],
+      "dimensionsAtCurrentScale": [
+        0.1,
+        1.2,
+        0.475
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.6,
+        "boundsXZ": [
+          -0.025,
+          0.025,
+          -0.2125,
+          -0.0125
+        ],
+        "connectionEdges": {
+          "south": {
+            "coordinate": -0.21249999105930328,
+            "span": [
+              -0.025,
+              0.025
+            ],
+            "width": 0.05
+          },
+          "east": {
+            "coordinate": 0.02500000037252903,
+            "span": [
+              -0.2125,
+              -0.1125
+            ],
+            "width": 0.1
+          },
+          "west": {
+            "coordinate": -0.02500000037252903,
+            "span": [
+              -0.2125,
+              -0.0125
+            ],
+            "width": 0.2
+          }
+        }
+      }
+    },
+    {
+      "file": "road-bend-barrier.glb",
+      "path": "assets/environment/roads/road-bend-barrier.glb",
+      "geometryClass": "90-degree bend (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 204,
+      "triangleCount": 128,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              -0.369474
+            ],
+            "width": 0.130526
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              0.369474,
+              0.5
+            ],
+            "width": 0.130526
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-bend-sidewalk.glb",
+      "path": "assets/environment/roads/road-bend-sidewalk.glb",
+      "geometryClass": "90-degree bend",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 292,
+      "triangleCount": 220,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.4,
+          -0.4,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.400856,
+              0.4
+            ],
+            "width": 0.800856
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.403407
+            ],
+            "width": 0.803407
+          }
+        }
+      }
+    },
+    {
+      "file": "road-bend-square-barrier.glb",
+      "path": "assets/environment/roads/road-bend-square-barrier.glb",
+      "geometryClass": "90-degree bend (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 84,
+      "triangleCount": 48,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-bend-square.glb",
+      "path": "assets/environment/roads/road-bend-square.glb",
+      "geometryClass": "90-degree bend",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 92,
+      "triangleCount": 60,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.4,
+          -0.4,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.4
+            ],
+            "width": 0.9
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.5
+            ],
+            "width": 0.9
+          }
+        }
+      }
+    },
+    {
+      "file": "road-bend.glb",
+      "path": "assets/environment/roads/road-bend.glb",
+      "geometryClass": "90-degree bend",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 352,
+      "triangleCount": 260,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.4,
+          -0.4,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.400856,
+              0.4
+            ],
+            "width": 0.800856
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.403407
+            ],
+            "width": 0.803407
+          }
+        }
+      }
+    },
+    {
+      "file": "road-bridge.glb",
+      "path": "assets/environment/roads/road-bridge.glb",
+      "geometryClass": "bridge road",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 464,
+      "triangleCount": 248,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.52,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        1.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.4,
+          0.4
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.5000001192092896,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.5000001192092896,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          }
+        }
+      }
+    },
+    {
+      "file": "road-crossing.glb",
+      "path": "assets/environment/roads/road-crossing.glb",
+      "geometryClass": "crossing",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 140,
+      "triangleCount": 104,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.4,
+          0.4
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          }
+        }
+      }
+    },
+    {
+      "file": "road-crossroad-barrier.glb",
+      "path": "assets/environment/roads/road-crossroad-barrier.glb",
+      "geometryClass": "4-way crossroad (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 192,
+      "triangleCount": 112,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-crossroad-line.glb",
+      "path": "assets/environment/roads/road-crossroad-line.glb",
+      "geometryClass": "4-way crossroad (line marking variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 160,
+      "triangleCount": 108,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.4
+            ],
+            "width": 0.9
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.4
+            ],
+            "width": 0.9
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-crossroad-path.glb",
+      "path": "assets/environment/roads/road-crossroad-path.glb",
+      "geometryClass": "4-way crossroad (path marking variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 320,
+      "triangleCount": 276,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.4
+            ],
+            "width": 0.9
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.5
+            ],
+            "width": 0.9
+          }
+        }
+      }
+    },
+    {
+      "file": "road-crossroad.glb",
+      "path": "assets/environment/roads/road-crossroad.glb",
+      "geometryClass": "4-way crossroad",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 168,
+      "triangleCount": 116,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.4
+            ],
+            "width": 0.9
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.5
+            ],
+            "width": 0.9
+          }
+        }
+      }
+    },
+    {
+      "file": "road-curve-barrier.glb",
+      "path": "assets/environment/roads/road-curve-barrier.glb",
+      "geometryClass": "curved road (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 312,
+      "triangleCount": 200,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        2.0,
+        0.08,
+        2.0
+      ],
+      "dimensionsAtCurrentScale": [
+        4.0,
+        0.16,
+        4.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -1.0,
+          1.0,
+          -1.0,
+          1.0
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 1.0,
+            "span": [
+              -0.008555,
+              1.0
+            ],
+            "width": 1.008555
+          },
+          "south": {
+            "coordinate": -1.0,
+            "span": [
+              -1.0,
+              -0.738948
+            ],
+            "width": 0.261052
+          },
+          "east": {
+            "coordinate": 1.0,
+            "span": [
+              0.738948,
+              1.0
+            ],
+            "width": 0.261052
+          },
+          "west": {
+            "coordinate": -1.0,
+            "span": [
+              -1.0,
+              0.008555
+            ],
+            "width": 1.008555
+          }
+        }
+      }
+    },
+    {
+      "file": "road-curve-intersection-barrier.glb",
+      "path": "assets/environment/roads/road-curve-intersection-barrier.glb",
+      "geometryClass": "curved intersection (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 266,
+      "triangleCount": 166,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        2.0,
+        0.08,
+        2.0
+      ],
+      "dimensionsAtCurrentScale": [
+        4.0,
+        0.16,
+        4.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -1.0,
+          1.0,
+          -1.0,
+          1.0
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 1.0,
+            "span": [
+              -0.008555,
+              1.0
+            ],
+            "width": 1.008555
+          },
+          "south": {
+            "coordinate": -1.0,
+            "span": [
+              -1.0,
+              1.0
+            ],
+            "width": 2.0
+          },
+          "east": {
+            "coordinate": 1.0,
+            "span": [
+              -1.0,
+              1.0
+            ],
+            "width": 2.0
+          },
+          "west": {
+            "coordinate": -1.0,
+            "span": [
+              -1.0,
+              0.008555
+            ],
+            "width": 1.008555
+          }
+        }
+      }
+    },
+    {
+      "file": "road-curve-intersection.glb",
+      "path": "assets/environment/roads/road-curve-intersection.glb",
+      "geometryClass": "curved intersection",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 402,
+      "triangleCount": 298,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        2.0,
+        0.02,
+        2.0
+      ],
+      "dimensionsAtCurrentScale": [
+        4.0,
+        0.04,
+        4.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -1.0,
+          1.0,
+          -0.9,
+          1.0
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 1.0,
+            "span": [
+              0.090589,
+              0.9
+            ],
+            "width": 0.809411
+          },
+          "east": {
+            "coordinate": 1.0,
+            "span": [
+              -0.9,
+              -0.1
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -1.0,
+            "span": [
+              -0.9,
+              -0.090589
+            ],
+            "width": 0.809411
+          }
+        }
+      }
+    },
+    {
+      "file": "road-curve-pavement.glb",
+      "path": "assets/environment/roads/road-curve-pavement.glb",
+      "geometryClass": "curved road (pavement variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 292,
+      "triangleCount": 220,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        2.0,
+        0.02,
+        2.0
+      ],
+      "dimensionsAtCurrentScale": [
+        4.0,
+        0.04,
+        4.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -1.0,
+          0.9,
+          -0.9,
+          1.0
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 1.0,
+            "span": [
+              0.090589,
+              0.9
+            ],
+            "width": 0.809411
+          },
+          "west": {
+            "coordinate": -1.0,
+            "span": [
+              -0.9,
+              -0.090589
+            ],
+            "width": 0.809411
+          }
+        }
+      }
+    },
+    {
+      "file": "road-curve.glb",
+      "path": "assets/environment/roads/road-curve.glb",
+      "geometryClass": "curved road",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 424,
+      "triangleCount": 308,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        2.0,
+        0.02,
+        2.0
+      ],
+      "dimensionsAtCurrentScale": [
+        4.0,
+        0.04,
+        4.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -1.0,
+          0.9,
+          -0.9,
+          1.0
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 1.0,
+            "span": [
+              0.090589,
+              0.9
+            ],
+            "width": 0.809411
+          },
+          "west": {
+            "coordinate": -1.0,
+            "span": [
+              -0.9,
+              -0.090589
+            ],
+            "width": 0.809411
+          }
+        }
+      }
+    },
+    {
+      "file": "road-driveway-double-barrier.glb",
+      "path": "assets/environment/roads/road-driveway-double-barrier.glb",
+      "geometryClass": "driveway/side access (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 96,
+      "triangleCount": 48,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-driveway-double.glb",
+      "path": "assets/environment/roads/road-driveway-double.glb",
+      "geometryClass": "driveway/side access",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 120,
+      "triangleCount": 72,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.4,
+          0.4
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          }
+        }
+      }
+    },
+    {
+      "file": "road-driveway-single-barrier.glb",
+      "path": "assets/environment/roads/road-driveway-single-barrier.glb",
+      "geometryClass": "driveway/side access (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 72,
+      "triangleCount": 36,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-driveway-single.glb",
+      "path": "assets/environment/roads/road-driveway-single.glb",
+      "geometryClass": "driveway/side access",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 98,
+      "triangleCount": 60,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.4,
+          0.4
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          }
+        }
+      }
+    },
+    {
+      "file": "road-end-barrier.glb",
+      "path": "assets/environment/roads/road-end-barrier.glb",
+      "geometryClass": "road termination (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 48,
+      "triangleCount": 28,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-end-round-barrier.glb",
+      "path": "assets/environment/roads/road-end-round-barrier.glb",
+      "geometryClass": "road termination (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 284,
+      "triangleCount": 160,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.097545,
+              0.5
+            ],
+            "width": 0.597545
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.097545,
+              0.5
+            ],
+            "width": 0.597545
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.097545,
+              0.097545
+            ],
+            "width": 0.19509
+          }
+        }
+      }
+    },
+    {
+      "file": "road-end-round.glb",
+      "path": "assets/environment/roads/road-end-round.glb",
+      "geometryClass": "road termination",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 302,
+      "triangleCount": 218,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.4,
+          0.5,
+          -0.4,
+          0.4
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          }
+        }
+      }
+    },
+    {
+      "file": "road-end.glb",
+      "path": "assets/environment/roads/road-end.glb",
+      "geometryClass": "road termination",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 66,
+      "triangleCount": 42,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.4,
+          0.5,
+          -0.4,
+          0.4
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          }
+        }
+      }
+    },
+    {
+      "file": "road-intersection-barrier.glb",
+      "path": "assets/environment/roads/road-intersection-barrier.glb",
+      "geometryClass": "T-junction (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 120,
+      "triangleCount": 68,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-intersection-line.glb",
+      "path": "assets/environment/roads/road-intersection-line.glb",
+      "geometryClass": "T-junction (line marking variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 116,
+      "triangleCount": 76,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.4,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.4
+            ],
+            "width": 0.9
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.5
+            ],
+            "width": 0.9
+          }
+        }
+      }
+    },
+    {
+      "file": "road-intersection-path.glb",
+      "path": "assets/environment/roads/road-intersection-path.glb",
+      "geometryClass": "T-junction (path marking variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 238,
+      "triangleCount": 204,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.4,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.4
+            ],
+            "width": 0.9
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.5
+            ],
+            "width": 0.9
+          }
+        }
+      }
+    },
+    {
+      "file": "road-intersection.glb",
+      "path": "assets/environment/roads/road-intersection.glb",
+      "geometryClass": "T-junction",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 124,
+      "triangleCount": 84,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.4,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.4
+            ],
+            "width": 0.9
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.5
+            ],
+            "width": 0.9
+          }
+        }
+      }
+    },
+    {
+      "file": "road-roundabout-barrier.glb",
+      "path": "assets/environment/roads/road-roundabout-barrier.glb",
+      "geometryClass": "roundabout (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 1154,
+      "triangleCount": 754,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        3.0,
+        0.08,
+        3.0
+      ],
+      "dimensionsAtCurrentScale": [
+        6.0,
+        0.16,
+        6.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -1.5,
+          1.5,
+          -1.5,
+          1.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 1.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -1.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 1.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -1.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-roundabout.glb",
+      "path": "assets/environment/roads/road-roundabout.glb",
+      "geometryClass": "roundabout",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 1966,
+      "triangleCount": 1636,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        3.0,
+        0.02,
+        3.0
+      ],
+      "dimensionsAtCurrentScale": [
+        6.0,
+        0.04,
+        6.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -1.5,
+          1.5,
+          -1.5,
+          1.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 1.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "south": {
+            "coordinate": -1.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "east": {
+            "coordinate": 1.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -1.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          }
+        }
+      }
+    },
+    {
+      "file": "road-side-barrier.glb",
+      "path": "assets/environment/roads/road-side-barrier.glb",
+      "geometryClass": "sidewalk/road edge (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 48,
+      "triangleCount": 24,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.31
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.62
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.81,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5000001192092896,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.8100000619888306,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 0.5000001788139343,
+            "span": [
+              -0.81,
+              0.5
+            ],
+            "width": 1.31
+          },
+          "west": {
+            "coordinate": -0.5000000596046448,
+            "span": [
+              -0.81,
+              0.5
+            ],
+            "width": 1.31
+          }
+        }
+      }
+    },
+    {
+      "file": "road-side-entry-barrier.glb",
+      "path": "assets/environment/roads/road-side-entry-barrier.glb",
+      "geometryClass": "sidewalk/road edge (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 354,
+      "triangleCount": 232,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.31
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.62
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.81,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5000000596046448,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.8100001215934753,
+            "span": [
+              -0.5,
+              0.127872
+            ],
+            "width": 0.627872
+          },
+          "east": {
+            "coordinate": 0.5000001192092896,
+            "span": [
+              -0.505373,
+              0.5
+            ],
+            "width": 1.005373
+          },
+          "west": {
+            "coordinate": -0.5000001192092896,
+            "span": [
+              -0.81,
+              0.5
+            ],
+            "width": 1.31
+          }
+        }
+      }
+    },
+    {
+      "file": "road-side-entry.glb",
+      "path": "assets/environment/roads/road-side-entry.glb",
+      "geometryClass": "sidewalk/road edge",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 432,
+      "triangleCount": 306,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.31
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.62
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.71,
+          0.4
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.400704,
+              0.4
+            ],
+            "width": 0.800704
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.71,
+              0.4
+            ],
+            "width": 1.11
+          }
+        }
+      }
+    },
+    {
+      "file": "road-side-exit-barrier.glb",
+      "path": "assets/environment/roads/road-side-exit-barrier.glb",
+      "geometryClass": "sidewalk/road edge (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 354,
+      "triangleCount": 232,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.31
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.62
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.81,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5000000596046448,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.8100000619888306,
+            "span": [
+              -0.127872,
+              0.5
+            ],
+            "width": 0.627872
+          },
+          "east": {
+            "coordinate": 0.5000001192092896,
+            "span": [
+              -0.81,
+              0.5
+            ],
+            "width": 1.31
+          },
+          "west": {
+            "coordinate": -0.5000001192092896,
+            "span": [
+              -0.505373,
+              0.5
+            ],
+            "width": 1.005373
+          }
+        }
+      }
+    },
+    {
+      "file": "road-side-exit.glb",
+      "path": "assets/environment/roads/road-side-exit.glb",
+      "geometryClass": "sidewalk/road edge",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 432,
+      "triangleCount": 306,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.31
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.62
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.71,
+          0.4
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.71,
+              0.4
+            ],
+            "width": 1.11
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.61,
+              0.4
+            ],
+            "width": 1.01
+          }
+        }
+      }
+    },
+    {
+      "file": "road-side.glb",
+      "path": "assets/environment/roads/road-side.glb",
+      "geometryClass": "sidewalk/road edge",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 72,
+      "triangleCount": 44,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.31
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.62
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.71,
+          0.4
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.71,
+              0.4
+            ],
+            "width": 1.11
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.71,
+              0.4
+            ],
+            "width": 1.11
+          }
+        }
+      }
+    },
+    {
+      "file": "road-slant-barrier.glb",
+      "path": "assets/environment/roads/road-slant-barrier.glb",
+      "geometryClass": "slant/elevated road (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 48,
+      "triangleCount": 24,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.33,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.66,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "road-slant-curve-barrier.glb",
+      "path": "assets/environment/roads/road-slant-curve-barrier.glb",
+      "geometryClass": "slant/elevated road (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 720,
+      "triangleCount": 420,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        2.0,
+        0.58,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        4.0,
+        1.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "road-slant-curve.glb",
+      "path": "assets/environment/roads/road-slant-curve.glb",
+      "geometryClass": "slant/elevated road",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 894,
+      "triangleCount": 544,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        2.0,
+        0.52,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        4.0,
+        1.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "road-slant-flat-curve.glb",
+      "path": "assets/environment/roads/road-slant-flat-curve.glb",
+      "geometryClass": "slant/elevated road",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 1046,
+      "triangleCount": 648,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        2.0,
+        0.52,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        4.0,
+        1.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "road-slant-flat-high.glb",
+      "path": "assets/environment/roads/road-slant-flat-high.glb",
+      "geometryClass": "slant/elevated road",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 72,
+      "triangleCount": 44,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.52,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        1.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "road-slant-flat.glb",
+      "path": "assets/environment/roads/road-slant-flat.glb",
+      "geometryClass": "slant/elevated road",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 72,
+      "triangleCount": 44,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.27,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.54,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "road-slant-high-barrier.glb",
+      "path": "assets/environment/roads/road-slant-high-barrier.glb",
+      "geometryClass": "slant/elevated road (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 48,
+      "triangleCount": 24,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.58,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        1.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "road-slant-high.glb",
+      "path": "assets/environment/roads/road-slant-high.glb",
+      "geometryClass": "slant/elevated road",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 72,
+      "triangleCount": 44,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.52,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        1.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "road-slant.glb",
+      "path": "assets/environment/roads/road-slant.glb",
+      "geometryClass": "slant/elevated road",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 72,
+      "triangleCount": 44,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.27,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.54,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "road-split-barrier.glb",
+      "path": "assets/environment/roads/road-split-barrier.glb",
+      "geometryClass": "split/merge (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 762,
+      "triangleCount": 512,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        2.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        4.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -1.0,
+          1.0
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 1.0,
+            "span": [
+              -0.5,
+              -0.435665
+            ],
+            "width": 0.064335
+          },
+          "south": {
+            "coordinate": -1.0,
+            "span": [
+              -0.5,
+              -0.435665
+            ],
+            "width": 0.064335
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.501914,
+              0.501914
+            ],
+            "width": 1.003829
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -1.0,
+              1.0
+            ],
+            "width": 2.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-split.glb",
+      "path": "assets/environment/roads/road-split.glb",
+      "geometryClass": "split/merge",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 1110,
+      "triangleCount": 862,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        2.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        4.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.9,
+          0.899632
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.400368,
+              0.401921
+            ],
+            "width": 0.802289
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.9,
+              0.899632
+            ],
+            "width": 1.799632
+          }
+        }
+      }
+    },
+    {
+      "file": "road-square-barrier.glb",
+      "path": "assets/environment/roads/road-square-barrier.glb",
+      "geometryClass": "square tile (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 48,
+      "triangleCount": 32,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-square.glb",
+      "path": "assets/environment/roads/road-square.glb",
+      "geometryClass": "square tile",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 56,
+      "triangleCount": 36,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.4,
+          0.4,
+          -0.4,
+          0.4
+        ],
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "road-straight-barrier-end.glb",
+      "path": "assets/environment/roads/road-straight-barrier-end.glb",
+      "geometryClass": "straight road (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 36,
+      "triangleCount": 16,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "road-straight-barrier-half.glb",
+      "path": "assets/environment/roads/road-straight-barrier-half.glb",
+      "geometryClass": "straight road (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 48,
+      "triangleCount": 24,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.5,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        1.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.25,
+          0.25,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5000001192092896,
+            "span": [
+              -0.25,
+              0.25
+            ],
+            "width": 0.5
+          },
+          "south": {
+            "coordinate": -0.5000001192092896,
+            "span": [
+              -0.25,
+              0.25
+            ],
+            "width": 0.5
+          },
+          "east": {
+            "coordinate": 0.25000008940696716,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.25000008940696716,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-straight-barrier.glb",
+      "path": "assets/environment/roads/road-straight-barrier.glb",
+      "geometryClass": "straight road (barrier variant)",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 48,
+      "triangleCount": 24,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.08,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.16,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.08,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5000001192092896,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.5000001192092896,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 0.5000001192092896,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.5000001192092896,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "road-straight-half.glb",
+      "path": "assets/environment/roads/road-straight-half.glb",
+      "geometryClass": "straight road",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 72,
+      "triangleCount": 44,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.5,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        1.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.25,
+          0.25,
+          -0.4,
+          0.4
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.25,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.25,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          }
+        }
+      }
+    },
+    {
+      "file": "road-straight.glb",
+      "path": "assets/environment/roads/road-straight.glb",
+      "geometryClass": "straight road",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 72,
+      "triangleCount": 44,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.01,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.4,
+          0.4
+        ],
+        "connectionEdges": {
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.4,
+              0.4
+            ],
+            "width": 0.8
+          }
+        }
+      }
+    },
+    {
+      "file": "sign-highway-detailed.glb",
+      "path": "assets/environment/roads/sign-highway-detailed.glb",
+      "geometryClass": "sign prop",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 420,
+      "triangleCount": 256,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.132375,
+        0.822125,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        0.26475,
+        1.64425,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.507625,
+        "boundsXZ": [
+          -0.107375,
+          -0.0375,
+          -0.4125,
+          0.4125
+        ],
+        "connectionEdges": {
+          "west": {
+            "coordinate": -0.10737499594688416,
+            "span": [
+              -0.4125,
+              0.4125
+            ],
+            "width": 0.825
+          }
+        }
+      }
+    },
+    {
+      "file": "sign-highway-wide.glb",
+      "path": "assets/environment/roads/sign-highway-wide.glb",
+      "geometryClass": "sign prop",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 244,
+      "triangleCount": 144,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.132375,
+        0.707375,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        0.26475,
+        1.41475,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.507625,
+        "boundsXZ": [
+          -0.107375,
+          -0.0375,
+          -0.4125,
+          0.4125
+        ],
+        "connectionEdges": {
+          "west": {
+            "coordinate": -0.10737499594688416,
+            "span": [
+              -0.4125,
+              0.4125
+            ],
+            "width": 0.825
+          }
+        }
+      }
+    },
+    {
+      "file": "sign-highway.glb",
+      "path": "assets/environment/roads/sign-highway.glb",
+      "geometryClass": "sign prop",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 300,
+      "triangleCount": 180,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        0.132375,
+        0.707375,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        0.26475,
+        1.41475,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.507625,
+        "boundsXZ": [
+          -0.107375,
+          -0.0375,
+          -0.4125,
+          0.4125
+        ],
+        "connectionEdges": {
+          "west": {
+            "coordinate": -0.10737499594688416,
+            "span": [
+              -0.4125,
+              0.4125
+            ],
+            "width": 0.825
+          }
+        }
+      }
+    },
+    {
+      "file": "tile-high.glb",
+      "path": "assets/environment/roads/tile-high.glb",
+      "geometryClass": "road tile",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 24,
+      "triangleCount": 12,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.25,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.5,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.25,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "tile-low.glb",
+      "path": "assets/environment/roads/tile-low.glb",
+      "geometryClass": "road tile",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 24,
+      "triangleCount": 12,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.02,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": 0.02,
+        "boundsXZ": [
+          -0.5,
+          0.5,
+          -0.5,
+          0.5
+        ],
+        "connectionEdges": {
+          "north": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "south": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "east": {
+            "coordinate": 0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          },
+          "west": {
+            "coordinate": -0.5,
+            "span": [
+              -0.5,
+              0.5
+            ],
+            "width": 1.0
+          }
+        }
+      }
+    },
+    {
+      "file": "tile-slant.glb",
+      "path": "assets/environment/roads/tile-slant.glb",
+      "geometryClass": "road tile",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 24,
+      "triangleCount": 12,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.27,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        0.54,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    },
+    {
+      "file": "tile-slantHigh.glb",
+      "path": "assets/environment/roads/tile-slantHigh.glb",
+      "geometryClass": "road tile",
+      "loaderVerified": true,
+      "meshCount": 1,
+      "vertexCount": 24,
+      "triangleCount": 12,
+      "materialCount": 1,
+      "textureReferences": [
+        "Textures/colormap.png"
+      ],
+      "generator": "UnityGLTF",
+      "dimensionsSource": [
+        1.0,
+        0.52,
+        1.0
+      ],
+      "dimensionsAtCurrentScale": [
+        2.0,
+        1.04,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "pavement": {
+        "y": null,
+        "boundsXZ": null,
+        "connectionEdges": {}
+      }
+    }
+  ]
+}

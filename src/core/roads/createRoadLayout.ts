@@ -5,10 +5,11 @@ export const ROAD_SCALE = 2;
 
 const ROAD_ASSETS = {
   straight: "environment/roads/road-straight.glb",
-  intersection: "environment/roads/road-intersection.glb",
+  crossroad: "environment/roads/road-crossroad.glb",
 } as const;
 
 type RoadAssetName = keyof typeof ROAD_ASSETS;
+type ConnectionEdge = "north" | "south" | "east" | "west";
 
 export interface RoadLayout {
   readonly root: THREE.Group;
@@ -16,12 +17,15 @@ export interface RoadLayout {
   readonly scale: number;
 }
 
-interface PavementSurface {
-  readonly y: number;
-  readonly minX: number;
-  readonly maxX: number;
-  readonly minZ: number;
-  readonly maxZ: number;
+interface ConnectionEdgeData {
+  readonly coordinate: number;
+  readonly min: number;
+  readonly max: number;
+}
+
+interface RoadGeometryReport {
+  readonly pavementY: number;
+  readonly edges: Partial<Record<ConnectionEdge, ConnectionEdgeData>>;
 }
 
 function hasLoadedTexture(material: THREE.Material): boolean {
@@ -53,8 +57,9 @@ function validateRoadModel(name: RoadAssetName, model: THREE.Object3D): void {
   }
 }
 
-function measureVisiblePavement(model: THREE.Object3D): PavementSurface {
+function measureRoadGeometry(model: THREE.Object3D): RoadGeometryReport {
   let pavementY = Number.POSITIVE_INFINITY;
+  const fullBounds = new THREE.Box3().setFromObject(model);
 
   model.traverse((object) => {
     if (!(object instanceof THREE.Mesh)) {
@@ -73,14 +78,18 @@ function measureVisiblePavement(model: THREE.Object3D): PavementSurface {
       const ids = index
         ? [index.getX(triangle * 3), index.getX(triangle * 3 + 1), index.getX(triangle * 3 + 2)]
         : [triangle * 3, triangle * 3 + 1, triangle * 3 + 2];
-      const yValues = ids.map((id) => position.getY(id));
-      const normalYValues = ids.map((id) => normal.getY(id));
-      const averageY = (yValues[0] + yValues[1] + yValues[2]) / 3;
+      const points = ids.map((id) => ({
+        x: position.getX(id),
+        y: position.getY(id),
+        z: position.getZ(id),
+        normalY: normal.getY(id),
+      }));
+      const averageY = points.reduce((sum, point) => sum + point.y, 0) / 3;
 
       if (
         averageY > 0
-        && Math.max(...yValues) - Math.min(...yValues) < 0.0001
-        && normalYValues.every((value) => value > 0.9)
+        && Math.max(...points.map((point) => point.y)) - Math.min(...points.map((point) => point.y)) < 0.0001
+        && points.every((point) => point.normalY > 0.9)
       ) {
         pavementY = Math.min(pavementY, averageY);
       }
@@ -88,13 +97,15 @@ function measureVisiblePavement(model: THREE.Object3D): PavementSurface {
   });
 
   if (!Number.isFinite(pavementY)) {
-    throw new Error("Visible road pavement could not be measured.");
+    throw new Error("Road pavement surface could not be measured.");
   }
 
-  let minX = Number.POSITIVE_INFINITY;
-  let maxX = Number.NEGATIVE_INFINITY;
-  let minZ = Number.POSITIVE_INFINITY;
-  let maxZ = Number.NEGATIVE_INFINITY;
+  const edgePoints: Record<ConnectionEdge, Array<[number, number]>> = {
+    north: [],
+    south: [],
+    east: [],
+    west: [],
+  };
 
   model.traverse((object) => {
     if (!(object instanceof THREE.Mesh)) {
@@ -113,58 +124,105 @@ function measureVisiblePavement(model: THREE.Object3D): PavementSurface {
       const ids = index
         ? [index.getX(triangle * 3), index.getX(triangle * 3 + 1), index.getX(triangle * 3 + 2)]
         : [triangle * 3, triangle * 3 + 1, triangle * 3 + 2];
-      const yValues = ids.map((id) => position.getY(id));
-      const normalYValues = ids.map((id) => normal.getY(id));
-      const averageY = (yValues[0] + yValues[1] + yValues[2]) / 3;
+      const points = ids.map((id) => ({
+        x: position.getX(id),
+        y: position.getY(id),
+        z: position.getZ(id),
+        normalY: normal.getY(id),
+      }));
+      const averageY = points.reduce((sum, point) => sum + point.y, 0) / 3;
 
       if (
-        Math.abs(averageY - pavementY) < 0.0001
-        && normalYValues.every((value) => value > 0.9)
+        Math.abs(averageY - pavementY) > 0.0001
+        || points.some((point) => point.normalY <= 0.9)
       ) {
-        ids.forEach((id) => {
-          minX = Math.min(minX, position.getX(id));
-          maxX = Math.max(maxX, position.getX(id));
-          minZ = Math.min(minZ, position.getZ(id));
-          maxZ = Math.max(maxZ, position.getZ(id));
-        });
+        continue;
+      }
+
+      const xs = points.map((point) => point.x);
+      const zs = points.map((point) => point.z);
+      const edgeTolerance = 0.0001;
+      if (points.some((point) => Math.abs(point.z - fullBounds.max.z) < edgeTolerance)) {
+        edgePoints.north.push([Math.min(...xs), Math.max(...xs)]);
+      }
+      if (points.some((point) => Math.abs(point.z - fullBounds.min.z) < edgeTolerance)) {
+        edgePoints.south.push([Math.min(...xs), Math.max(...xs)]);
+      }
+      if (points.some((point) => Math.abs(point.x - fullBounds.max.x) < edgeTolerance)) {
+        edgePoints.east.push([Math.min(...zs), Math.max(...zs)]);
+      }
+      if (points.some((point) => Math.abs(point.x - fullBounds.min.x) < edgeTolerance)) {
+        edgePoints.west.push([Math.min(...zs), Math.max(...zs)]);
       }
     }
   });
 
-  if (![minX, maxX, minZ, maxZ].every(Number.isFinite)) {
-    throw new Error("Visible road pavement bounds could not be measured.");
-  }
+  const edges: Partial<Record<ConnectionEdge, ConnectionEdgeData>> = {};
+  (Object.keys(edgePoints) as ConnectionEdge[]).forEach((edge) => {
+    const intervals = edgePoints[edge];
+    if (intervals.length === 0) {
+      return;
+    }
 
-  return { y: pavementY, minX, maxX, minZ, maxZ };
+    intervals.sort((left, right) => left[0] - right[0]);
+    edges[edge] = {
+      coordinate: edge === "north"
+        ? fullBounds.max.z
+        : edge === "south"
+          ? fullBounds.min.z
+          : edge === "east"
+            ? fullBounds.max.x
+            : fullBounds.min.x,
+      min: intervals[0][0],
+      max: intervals[intervals.length - 1][1],
+    };
+  });
+
+  return { pavementY, edges };
 }
 
 export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLayout> {
-  const loadedModels = new Map<RoadAssetName, THREE.Object3D>();
-
+  const loaded = new Map<RoadAssetName, THREE.Object3D>();
   await Promise.all(
-    Object.entries(ROAD_ASSETS).map(async ([name, assetPath]) => {
+    Object.entries(ROAD_ASSETS).map(async ([name, path]) => {
       const assetName = name as RoadAssetName;
-      const gltf = await assetLoader.loadGltf(assetPath);
+      const gltf = await assetLoader.loadGltf(path);
       validateRoadModel(assetName, gltf.scene);
-      loadedModels.set(assetName, gltf.scene);
+      loaded.set(assetName, gltf.scene);
     }),
   );
 
-  const straightSource = loadedModels.get("straight");
-  const intersectionSource = loadedModels.get("intersection");
-  if (!straightSource || !intersectionSource) {
-    throw new Error("The road junction assets were not loaded.");
+  const straight = loaded.get("straight");
+  const crossroad = loaded.get("crossroad");
+  if (!straight || !crossroad) {
+    throw new Error("The crossroad and straight road assets were not loaded.");
   }
 
-  const straightPavement = measureVisiblePavement(straightSource);
-  const intersectionPavement = measureVisiblePavement(intersectionSource);
-  const intersectionBounds = new THREE.Box3().setFromObject(intersectionSource);
-  if (Math.abs(straightPavement.y - intersectionPavement.y) > 0.0001) {
-    throw new Error("Straight and intersection road surfaces are not level.");
+  const straightReport = measureRoadGeometry(straight);
+  const crossroadReport = measureRoadGeometry(crossroad);
+  if (Math.abs(straightReport.pavementY - crossroadReport.pavementY) > 0.0001) {
+    throw new Error("Crossroad and straight road surfaces are not level.");
+  }
+
+  const requiredEdges: ConnectionEdge[] = ["north", "south", "east", "west"];
+  if (requiredEdges.some((edge) => !crossroadReport.edges[edge])) {
+    throw new Error("The selected crossroad asset does not expose four pavement connections.");
+  }
+  const crossroadEdges = crossroadReport.edges;
+  const straightEdges = straightReport.edges;
+  if (!straightEdges.east || !straightEdges.west) {
+    throw new Error("The selected straight asset does not expose east/west pavement connections.");
+  }
+  const eastConnection = crossroadEdges.east;
+  const westConnection = crossroadEdges.west;
+  const northConnection = crossroadEdges.north;
+  const southConnection = crossroadEdges.south;
+  if (!eastConnection || !westConnection || !northConnection || !southConnection) {
+    throw new Error("The selected crossroad asset does not expose four pavement connections.");
   }
 
   const root = new THREE.Group();
-  root.name = "RoadJunctionTestArea";
+  root.name = "ValidatedCrossroadTestArea";
   const place = (source: THREE.Object3D, x: number, z: number, rotationY = 0): void => {
     const instance = source.clone(true);
     instance.position.set(x, 0, z);
@@ -173,20 +231,31 @@ export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLa
     root.add(instance);
   };
 
-  // The intersection remains in its authored orientation: north, south, east.
-  place(intersectionSource, 0, 0);
+  place(crossroad, 0, 0);
 
-  // Align each straight's visible pavement edge with the matching intersection edge.
-  const northZ = (intersectionBounds.max.z - straightPavement.minZ) * ROAD_SCALE;
-  const southZ = (intersectionBounds.min.z - straightPavement.maxZ) * ROAD_SCALE;
-  const eastX = (intersectionBounds.max.x - straightPavement.minZ) * ROAD_SCALE;
-  place(straightSource, 0, northZ);
-  place(straightSource, 0, southZ);
-  place(straightSource, eastX, 0, Math.PI / 2);
+  // East/west use the straight model's authored X-axis connections.
+  const eastX = (
+    eastConnection.coordinate - straightEdges.west.coordinate
+  ) * ROAD_SCALE;
+  const westX = (
+    westConnection.coordinate - straightEdges.east.coordinate
+  ) * ROAD_SCALE;
+  place(straight, eastX, 0);
+  place(straight, westX, 0);
+
+  // A 90-degree Y rotation turns the straight model's X-axis connections north/south.
+  const northZ = (
+    northConnection.coordinate + straightEdges.east.coordinate
+  ) * ROAD_SCALE;
+  const southZ = (
+    southConnection.coordinate + straightEdges.west.coordinate
+  ) * ROAD_SCALE;
+  place(straight, 0, northZ, Math.PI / 2);
+  place(straight, 0, southZ, Math.PI / 2);
 
   return {
     root,
-    surfaceY: straightPavement.y * ROAD_SCALE,
+    surfaceY: straightReport.pavementY * ROAD_SCALE,
     scale: ROAD_SCALE,
   };
 }
