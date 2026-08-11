@@ -2,16 +2,8 @@ import * as THREE from "three";
 import { AssetLoader } from "../assets/AssetLoader";
 
 export const ROAD_SCALE = 2;
-
-type RoadPieceName = "straight" | "curve" | "intersection" | "end" | "side";
-
-const ROAD_ASSETS: Readonly<Record<RoadPieceName, string>> = {
-  straight: "environment/roads/road-straight.glb",
-  curve: "environment/roads/road-curve.glb",
-  intersection: "environment/roads/road-intersection.glb",
-  end: "environment/roads/road-end.glb",
-  side: "environment/roads/road-side.glb",
-};
+const ROAD_STRAIGHT_ASSET = "environment/roads/road-straight.glb";
+const PAVEMENT_LEVEL_EPSILON = 0.0001;
 
 export interface RoadLayout {
   readonly root: THREE.Group;
@@ -28,7 +20,7 @@ function hasLoadedTexture(material: THREE.Material): boolean {
   return map instanceof THREE.Texture && map.image !== undefined;
 }
 
-function validateRoadModel(name: RoadPieceName, model: THREE.Object3D): void {
+function validateRoadModel(model: THREE.Object3D): void {
   let meshCount = 0;
 
   model.traverse((object) => {
@@ -39,101 +31,96 @@ function validateRoadModel(name: RoadPieceName, model: THREE.Object3D): void {
     meshCount += 1;
     const materials = Array.isArray(object.material) ? object.material : [object.material];
     if (materials.some((material) => !hasLoadedTexture(material))) {
-      throw new Error(`Road asset ${name} loaded without its expected colormap texture.`);
+      throw new Error("road-straight.glb loaded without its expected colormap texture.");
     }
   });
 
   if (meshCount === 0) {
-    throw new Error(`Road asset ${name} loaded without visible geometry.`);
+    throw new Error("road-straight.glb loaded without visible geometry.");
   }
 }
 
-function scaled(value: number): number {
-  return value * ROAD_SCALE;
+interface VisiblePavementMetrics {
+  readonly y: number;
+  readonly minX: number;
+  readonly maxX: number;
+  readonly minZ: number;
+  readonly maxZ: number;
+}
+
+function measureVisiblePavement(model: THREE.Object3D): VisiblePavementMetrics {
+  const heights: number[] = [];
+  const positions: THREE.BufferAttribute[] = [];
+
+  model.traverse((object) => {
+    if (!(object instanceof THREE.Mesh)) {
+      return;
+    }
+
+    const position = object.geometry.getAttribute("position");
+    if (!(position instanceof THREE.BufferAttribute)) {
+      return;
+    }
+
+    positions.push(position);
+    for (let index = 0; index < position.count; index += 1) {
+      heights.push(position.getY(index));
+    }
+  });
+
+  if (heights.length === 0) {
+    throw new Error("road-straight.glb has no measurable geometry positions.");
+  }
+
+  const minY = Math.min(...heights);
+  const maxY = Math.max(...heights);
+  const targetY = minY + (maxY - minY) / 2;
+  const pavementY = heights.reduce((closest, height) => (
+    Math.abs(height - targetY) < Math.abs(closest - targetY) ? height : closest
+  ), heights[0]);
+
+  let minX = Number.POSITIVE_INFINITY;
+  let maxX = Number.NEGATIVE_INFINITY;
+  let minZ = Number.POSITIVE_INFINITY;
+  let maxZ = Number.NEGATIVE_INFINITY;
+
+  positions.forEach((position) => {
+    for (let index = 0; index < position.count; index += 1) {
+      if (Math.abs(position.getY(index) - pavementY) > PAVEMENT_LEVEL_EPSILON) {
+        continue;
+      }
+
+      minX = Math.min(minX, position.getX(index));
+      maxX = Math.max(maxX, position.getX(index));
+      minZ = Math.min(minZ, position.getZ(index));
+      maxZ = Math.max(maxZ, position.getZ(index));
+    }
+  });
+
+  if (!Number.isFinite(minX) || !Number.isFinite(minZ) || maxZ <= minZ) {
+    throw new Error("road-straight.glb has no measurable visible pavement surface.");
+  }
+
+  return { y: pavementY, minX, maxX, minZ, maxZ };
 }
 
 export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLayout> {
-  const loadedModels = new Map<RoadPieceName, THREE.Object3D>();
+  const gltf = await assetLoader.loadGltf(ROAD_STRAIGHT_ASSET);
+  validateRoadModel(gltf.scene);
 
-  await Promise.all(
-    Object.entries(ROAD_ASSETS).map(async ([name, assetPath]) => {
-      const pieceName = name as RoadPieceName;
-      const gltf = await assetLoader.loadGltf(assetPath);
-      validateRoadModel(pieceName, gltf.scene);
-      loadedModels.set(pieceName, gltf.scene);
-    }),
-  );
-
-  const getSource = (pieceName: RoadPieceName): THREE.Object3D => {
-    const source = loadedModels.get(pieceName);
-    if (!source) {
-      throw new Error(`Road asset ${pieceName} was not loaded.`);
-    }
-    return source;
-  };
-
-  const straightSource = getSource("straight");
-  const curveSource = getSource("curve");
-  const intersectionSource = getSource("intersection");
-  const endSource = getSource("end");
-  const sideSource = getSource("side");
-
-  const straightBounds = new THREE.Box3().setFromObject(straightSource);
-  const curveBounds = new THREE.Box3().setFromObject(curveSource);
-  const intersectionBounds = new THREE.Box3().setFromObject(intersectionSource);
-  const endBounds = new THREE.Box3().setFromObject(endSource);
-  const sideBounds = new THREE.Box3().setFromObject(sideSource);
-
-  const surfaceY = scaled(straightBounds.max.y);
-  const intersectionMinX = scaled(intersectionBounds.min.x);
-  const intersectionMaxX = scaled(intersectionBounds.max.x);
-  const intersectionMinZ = scaled(intersectionBounds.min.z);
-  const intersectionMaxZ = scaled(intersectionBounds.max.z);
+  const pavement = measureVisiblePavement(gltf.scene);
+  const pavementLength = pavement.maxZ - pavement.minZ;
+  const spacing = pavementLength * ROAD_SCALE;
+  const surfaceY = pavement.y * ROAD_SCALE;
   const root = new THREE.Group();
-  root.name = "RoadTestArea";
+  root.name = "StraightRoadTestArea";
 
-  const place = (
-    pieceName: RoadPieceName,
-    x: number,
-    z: number,
-    rotationY = 0,
-  ): void => {
-    const instance = getSource(pieceName).clone(true);
-    instance.position.set(x, 0, z);
-    instance.rotation.y = rotationY;
+  for (let index = -2; index <= 2; index += 1) {
+    const instance = gltf.scene.clone(true);
+    instance.position.set(0, 0, index * spacing);
     instance.scale.setScalar(ROAD_SCALE);
     root.add(instance);
-  };
-
-  // Every position below is derived from the imported model bounds. The
-  // intersection is the anchor tile; neighboring pieces touch its edges.
-  place("intersection", 0, 0);
-
-  const rightStraightX = intersectionMaxX - scaled(straightBounds.min.x);
-  const topStraightZ = intersectionMaxZ - scaled(straightBounds.min.z);
-  const roadEndZ = intersectionMinZ - scaled(endBounds.max.z);
-  place("straight", rightStraightX, 0);
-  place("straight", 0, topStraightZ);
-  place("end", 0, roadEndZ);
-
-  // The curve's right edge is the connection to the intersection's left edge.
-  // Its upper edge is the only edge used as a route endpoint, so the source
-  // bounds align both the curve and its neighboring straight without overlap.
-  const curveX = intersectionMinX - scaled(curveBounds.max.x);
-  const curveZ = intersectionMaxZ - scaled(curveBounds.max.z);
-  place("curve", curveX, curveZ);
-
-  // Side pieces are placed from their actual asymmetric bounds, directly
-  // outside the east and north road edges.
-  const eastSideX = rightStraightX
-    + scaled(straightBounds.max.x)
-    - scaled(sideBounds.min.x);
-  const northSideX = intersectionMaxX - scaled(sideBounds.min.x);
-  const northSideZ = topStraightZ
-    + scaled(straightBounds.min.z)
-    - scaled(sideBounds.min.z);
-  place("side", eastSideX, 0);
-  place("side", northSideX, northSideZ);
+  }
 
   return { root, surfaceY, scale: ROAD_SCALE };
 }

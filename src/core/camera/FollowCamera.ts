@@ -1,16 +1,30 @@
 import * as THREE from "three";
 
+export interface FollowCameraOptions {
+  readonly offset?: THREE.Vector3;
+  readonly lookAtOffset?: THREE.Vector3;
+}
+
+const DEFAULT_OFFSET = new THREE.Vector3(0, 3.2, -6.5);
+const DEFAULT_LOOK_AT_OFFSET = new THREE.Vector3(0, 0.65, 0);
+
 export class FollowCamera {
   private readonly camera: THREE.PerspectiveCamera;
   private readonly target: THREE.Object3D;
-  private readonly offset = new THREE.Vector3(0, 3.2, -6.5);
-  private readonly lookAtOffset = new THREE.Vector3(0, 0.65, 0);
+  private readonly offset = new THREE.Vector3();
+  private readonly lookAtOffset = new THREE.Vector3();
   private readonly desiredPosition = new THREE.Vector3();
   private readonly desiredTarget = new THREE.Vector3();
 
-  public constructor(camera: THREE.PerspectiveCamera, target: THREE.Object3D) {
+  public constructor(
+    camera: THREE.PerspectiveCamera,
+    target: THREE.Object3D,
+    options: FollowCameraOptions = {},
+  ) {
     this.camera = camera;
     this.target = target;
+    this.offset.copy(options.offset ?? DEFAULT_OFFSET);
+    this.lookAtOffset.copy(options.lookAtOffset ?? DEFAULT_LOOK_AT_OFFSET);
   }
 
   public snap(): void {
