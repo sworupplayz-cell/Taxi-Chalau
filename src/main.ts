@@ -1,7 +1,10 @@
 import * as THREE from "three";
 import "./styles.css";
+import { FollowCamera } from "./core/camera/FollowCamera";
 import { AssetLoader } from "./core/assets/AssetLoader";
 import { validateTaxiAsset, TaxiAssetValidationError } from "./core/assets/validateTaxiAsset";
+import { TaxiDrivingSystem } from "./core/driving/TaxiDrivingSystem";
+import { InputController } from "./core/input/InputController";
 import { createRenderer, RendererInitializationError } from "./core/renderer/createRenderer";
 import { createCamera, createScene } from "./core/scene/createScene";
 import { resizeViewport } from "./core/scene/resizeViewport";
@@ -34,15 +37,27 @@ function startApplication(container: HTMLElement): () => void {
   const camera = createCamera(1);
   const renderer = createRenderer(container);
   const stopResizeHandling = resizeViewport(camera, renderer, container);
+  const inputController = new InputController(container);
   const assetLoader = new AssetLoader();
+  const clock = new THREE.Clock();
+
+  let taxiDriving: TaxiDrivingSystem | undefined;
+  let followCamera: FollowCamera | undefined;
 
   void assetLoader.loadGltf("vehicles/player/taxi.glb")
     .then((gltf) => {
       const report = validateTaxiAsset(gltf);
       const taxi = gltf.scene;
-      taxi.name = "PlayerTaxiValidation";
+      taxi.name = "PlayerTaxi";
       taxi.position.y = -report.bounds.min.y;
       scene.add(taxi);
+
+      taxiDriving = new TaxiDrivingSystem(taxi, {
+        groundY: 0,
+        groundOffset: -report.bounds.min.y,
+      });
+      followCamera = new FollowCamera(camera, taxi);
+      followCamera.snap();
     })
     .catch((error: unknown) => {
       const message = error instanceof TaxiAssetValidationError || error instanceof Error
@@ -56,6 +71,11 @@ function startApplication(container: HTMLElement): () => void {
   let animationFrame = 0;
   const renderFrame = (): void => {
     animationFrame = window.requestAnimationFrame(renderFrame);
+    const deltaSeconds = clock.getDelta();
+    const input = inputController.sync();
+
+    taxiDriving?.update(input, deltaSeconds);
+    followCamera?.update(deltaSeconds);
     renderer.render(scene, camera);
   };
 
@@ -63,6 +83,7 @@ function startApplication(container: HTMLElement): () => void {
 
   return (): void => {
     window.cancelAnimationFrame(animationFrame);
+    inputController.dispose();
     stopResizeHandling();
     renderer.dispose();
     scene.traverse((object) => {

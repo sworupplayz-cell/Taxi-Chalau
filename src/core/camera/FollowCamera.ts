@@ -1,0 +1,34 @@
+import * as THREE from "three";
+
+export class FollowCamera {
+  private readonly camera: THREE.PerspectiveCamera;
+  private readonly target: THREE.Object3D;
+  private readonly offset = new THREE.Vector3(0, 3.2, -6.5);
+  private readonly lookAtOffset = new THREE.Vector3(0, 0.65, 0);
+  private readonly desiredPosition = new THREE.Vector3();
+  private readonly desiredTarget = new THREE.Vector3();
+
+  public constructor(camera: THREE.PerspectiveCamera, target: THREE.Object3D) {
+    this.camera = camera;
+    this.target = target;
+  }
+
+  public snap(): void {
+    this.calculateDesiredTransform();
+    this.camera.position.copy(this.desiredPosition);
+    this.camera.lookAt(this.desiredTarget);
+  }
+
+  public update(deltaSeconds: number): void {
+    this.calculateDesiredTransform();
+
+    const smoothing = 1 - Math.exp(-7 * Math.min(Math.max(deltaSeconds, 0), 0.05));
+    this.camera.position.lerp(this.desiredPosition, smoothing);
+    this.camera.lookAt(this.desiredTarget);
+  }
+
+  private calculateDesiredTransform(): void {
+    this.desiredPosition.copy(this.offset).applyQuaternion(this.target.quaternion).add(this.target.position);
+    this.desiredTarget.copy(this.target.position).add(this.lookAtOffset);
+  }
+}
