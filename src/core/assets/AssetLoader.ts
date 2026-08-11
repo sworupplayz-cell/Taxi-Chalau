@@ -24,6 +24,16 @@ function toAssetUrl(assetPath: string): string {
 export class AssetLoader {
   private readonly gltfLoader = new GLTFLoader();
 
+  public constructor() {
+    this.gltfLoader.manager.setURLModifier((url) => {
+      if (url.includes("/assets/environment/buildings/") && url.includes("/Textures/")) {
+        return url.replace("/Textures/", "/textures/");
+      }
+
+      return url;
+    });
+  }
+
   public loadGltf(assetPath: string): Promise<GLTF> {
     let url: string;
 

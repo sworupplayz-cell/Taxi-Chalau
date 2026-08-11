@@ -6,6 +6,7 @@ import { validateTaxiAsset, TaxiAssetValidationError } from "./core/assets/valid
 import { TaxiDrivingSystem } from "./core/driving/TaxiDrivingSystem";
 import { InputController } from "./core/input/InputController";
 import { createRenderer, RendererInitializationError } from "./core/renderer/createRenderer";
+import { createNeighborhood } from "./core/neighborhood/createNeighborhood";
 import { createRoadLayout } from "./core/roads/createRoadLayout";
 import { startRoadAssetInspection } from "./core/roads/RoadAssetInspection";
 import { createCamera, createScene } from "./core/scene/createScene";
@@ -49,11 +50,12 @@ function startApplication(container: HTMLElement): () => void {
 
   void Promise.all([
     createRoadLayout(assetLoader),
+    createNeighborhood(assetLoader),
     assetLoader.loadGltf("vehicles/player/taxi.glb"),
   ])
-    .then(([roadLayout, taxiGltf]) => {
+    .then(([roadLayout, neighborhood, taxiGltf]) => {
       const taxiReport = validateTaxiAsset(taxiGltf);
-      scene.add(roadLayout.root);
+      scene.add(roadLayout.root, neighborhood);
 
       const taxi = taxiGltf.scene;
       taxi.name = "PlayerTaxi";
