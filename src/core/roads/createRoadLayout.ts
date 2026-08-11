@@ -68,6 +68,16 @@ export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLa
   const sourceBounds = new THREE.Box3().setFromObject(straightSource);
   const surfaceY = sourceBounds.max.y * ROAD_SCALE;
   const tileSize = ROAD_SCALE;
+  const sideSource = loadedModels.get("side");
+  if (!sideSource) {
+    throw new Error("The road-side source model was not loaded.");
+  }
+
+  const sideBounds = new THREE.Box3().setFromObject(sideSource);
+  const sideMinZ = sideBounds.min.z * ROAD_SCALE;
+  const sideMaxZ = sideBounds.max.z * ROAD_SCALE;
+  const northSideZ = tileSize / 2 - sideMinZ;
+  const westSideX = -tileSize / 2 - sideMaxZ;
   const root = new THREE.Group();
   root.name = "RoadTestArea";
 
@@ -97,13 +107,18 @@ export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLa
   place("end", 0, -tileSize);
 
   // A right-hand curve extends the east branch and ends in a northbound straight.
-  place("curve", tileSize * 2, 0);
-  place("straight", tileSize * 2, tileSize);
+  // The curve is a two-unit source span, so its center sits one half-tile
+  // beyond the east straight's edge rather than overlapping that tile.
+  const curveCenterX = tileSize * 2.5;
+  const curveExitZ = tileSize * 1.5;
+  place("curve", curveCenterX, 0);
+  place("straight", curveCenterX, curveExitZ);
 
-  // Road-side pieces mark the outside edges without filling the entire test area.
-  place("side", tileSize, tileSize);
-  place("side", tileSize, -tileSize, Math.PI / 2);
-  place("side", -tileSize, -tileSize, Math.PI / 2);
+  // Road-side pieces mark the outside edges without crossing the adjacent tiles.
+  // Their source bounds are asymmetric, so their centers are aligned from their
+  // actual edges rather than from their nominal origin.
+  place("side", -tileSize, northSideZ);
+  place("side", westSideX, -tileSize, Math.PI / 2);
 
   return { root, surfaceY, scale: ROAD_SCALE };
 }
