@@ -13,7 +13,7 @@ export function createScene(): THREE.Scene {
   scene.add(directionalLight);
 
   const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(200, 200),
+    new THREE.PlaneGeometry(18, 18),
     new THREE.MeshStandardMaterial({
       color: 0x68786e,
       roughness: 1,

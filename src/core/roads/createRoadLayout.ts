@@ -160,30 +160,27 @@ export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLa
     (crossroadEdges.north.coordinate + straightEdges.east.coordinate) * ROAD_SCALE,
   ];
 
-  gridZ.forEach((z) => {
-    gridX.forEach((x) => place(crossroadGltf.scene, x, z));
-    horizontalConnectors.forEach((x) => place(straightGltf.scene, x, z));
-  });
-  gridX.forEach((x) => {
-    verticalConnectors.forEach((z) => place(straightGltf.scene, x, z, Math.PI / 2));
-  });
-
-  // Keep edge pieces on the exposed outside perimeter only. Their offsets use
-  // the catalogue pavement widths, leaving the four interior lots open.
   const straightWidth = straightPavement[3] - straightPavement[2];
   const sideWidth = sidePavement[1] - sidePavement[0];
-  const outsideOffset = (straightWidth + sideWidth) * ROAD_SCALE / 2;
-  const leftSideX = gridX[0] - outsideOffset;
-  const rightSideX = gridX[2] + outsideOffset;
-  const bottomSideZ = gridZ[0] - outsideOffset;
-  const topSideZ = gridZ[2] + outsideOffset;
-  verticalConnectors.forEach((z) => {
-    place(sideGltf.scene, leftSideX, z);
-    place(sideGltf.scene, rightSideX, z);
+  const sidewalkOffset = (straightWidth + sideWidth) * ROAD_SCALE / 2;
+
+  // Each straight section receives a sidewalk on both sides. The sidewalks
+  // use the catalogued pavement width, so they touch the road edge without
+  // entering the asphalt or filling the future lots.
+  gridZ.forEach((z) => {
+    gridX.forEach((x) => place(crossroadGltf.scene, x, z));
+    horizontalConnectors.forEach((x) => {
+      place(straightGltf.scene, x, z);
+      place(sideGltf.scene, x, z - sidewalkOffset, Math.PI / 2);
+      place(sideGltf.scene, x, z + sidewalkOffset, Math.PI / 2);
+    });
   });
-  horizontalConnectors.forEach((x) => {
-    place(sideGltf.scene, x, bottomSideZ, Math.PI / 2);
-    place(sideGltf.scene, x, topSideZ, Math.PI / 2);
+  gridX.forEach((x) => {
+    verticalConnectors.forEach((z) => {
+      place(straightGltf.scene, x, z, Math.PI / 2);
+      place(sideGltf.scene, x - sidewalkOffset, z);
+      place(sideGltf.scene, x + sidewalkOffset, z);
+    });
   });
 
   return {
