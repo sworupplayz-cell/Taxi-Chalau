@@ -48,6 +48,10 @@ function validateRoadModel(name: RoadPieceName, model: THREE.Object3D): void {
   }
 }
 
+function scaled(value: number): number {
+  return value * ROAD_SCALE;
+}
+
 export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLayout> {
   const loadedModels = new Map<RoadPieceName, THREE.Object3D>();
 
@@ -60,24 +64,31 @@ export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLa
     }),
   );
 
-  const straightSource = loadedModels.get("straight");
-  if (!straightSource) {
-    throw new Error("The straight road source model was not loaded.");
-  }
+  const getSource = (pieceName: RoadPieceName): THREE.Object3D => {
+    const source = loadedModels.get(pieceName);
+    if (!source) {
+      throw new Error(`Road asset ${pieceName} was not loaded.`);
+    }
+    return source;
+  };
 
-  const sourceBounds = new THREE.Box3().setFromObject(straightSource);
-  const surfaceY = sourceBounds.max.y * ROAD_SCALE;
-  const tileSize = ROAD_SCALE;
-  const sideSource = loadedModels.get("side");
-  if (!sideSource) {
-    throw new Error("The road-side source model was not loaded.");
-  }
+  const straightSource = getSource("straight");
+  const curveSource = getSource("curve");
+  const intersectionSource = getSource("intersection");
+  const endSource = getSource("end");
+  const sideSource = getSource("side");
 
+  const straightBounds = new THREE.Box3().setFromObject(straightSource);
+  const curveBounds = new THREE.Box3().setFromObject(curveSource);
+  const intersectionBounds = new THREE.Box3().setFromObject(intersectionSource);
+  const endBounds = new THREE.Box3().setFromObject(endSource);
   const sideBounds = new THREE.Box3().setFromObject(sideSource);
-  const sideMinZ = sideBounds.min.z * ROAD_SCALE;
-  const sideMaxZ = sideBounds.max.z * ROAD_SCALE;
-  const northSideZ = tileSize / 2 - sideMinZ;
-  const westSideX = -tileSize / 2 - sideMaxZ;
+
+  const surfaceY = scaled(straightBounds.max.y);
+  const intersectionMinX = scaled(intersectionBounds.min.x);
+  const intersectionMaxX = scaled(intersectionBounds.max.x);
+  const intersectionMinZ = scaled(intersectionBounds.min.z);
+  const intersectionMaxZ = scaled(intersectionBounds.max.z);
   const root = new THREE.Group();
   root.name = "RoadTestArea";
 
@@ -87,38 +98,42 @@ export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLa
     z: number,
     rotationY = 0,
   ): void => {
-    const source = loadedModels.get(pieceName);
-    if (!source) {
-      throw new Error(`Road asset ${pieceName} was not loaded.`);
-    }
-
-    const instance = source.clone(true);
+    const instance = getSource(pieceName).clone(true);
     instance.position.set(x, 0, z);
     instance.rotation.y = rotationY;
     instance.scale.setScalar(ROAD_SCALE);
     root.add(instance);
   };
 
-  // Core crossroad: each one-unit source tile is uniformly scaled to two meters.
+  // Every position below is derived from the imported model bounds. The
+  // intersection is the anchor tile; neighboring pieces touch its edges.
   place("intersection", 0, 0);
-  place("straight", 0, tileSize);
-  place("straight", -tileSize, 0, Math.PI / 2);
-  place("straight", tileSize, 0, Math.PI / 2);
-  place("end", 0, -tileSize);
 
-  // A right-hand curve extends the east branch and ends in a northbound straight.
-  // The curve is a two-unit source span, so its center sits one half-tile
-  // beyond the east straight's edge rather than overlapping that tile.
-  const curveCenterX = tileSize * 2.5;
-  const curveExitZ = tileSize * 1.5;
-  place("curve", curveCenterX, 0);
-  place("straight", curveCenterX, curveExitZ);
+  const rightStraightX = intersectionMaxX - scaled(straightBounds.min.x);
+  const topStraightZ = intersectionMaxZ - scaled(straightBounds.min.z);
+  const roadEndZ = intersectionMinZ - scaled(endBounds.max.z);
+  place("straight", rightStraightX, 0);
+  place("straight", 0, topStraightZ);
+  place("end", 0, roadEndZ);
 
-  // Road-side pieces mark the outside edges without crossing the adjacent tiles.
-  // Their source bounds are asymmetric, so their centers are aligned from their
-  // actual edges rather than from their nominal origin.
-  place("side", -tileSize, northSideZ);
-  place("side", westSideX, -tileSize, Math.PI / 2);
+  // The curve's right edge is the connection to the intersection's left edge.
+  // Its upper edge is the only edge used as a route endpoint, so the source
+  // bounds align both the curve and its neighboring straight without overlap.
+  const curveX = intersectionMinX - scaled(curveBounds.max.x);
+  const curveZ = intersectionMaxZ - scaled(curveBounds.max.z);
+  place("curve", curveX, curveZ);
+
+  // Side pieces are placed from their actual asymmetric bounds, directly
+  // outside the east and north road edges.
+  const eastSideX = rightStraightX
+    + scaled(straightBounds.max.x)
+    - scaled(sideBounds.min.x);
+  const northSideX = intersectionMaxX - scaled(sideBounds.min.x);
+  const northSideZ = topStraightZ
+    + scaled(straightBounds.min.z)
+    - scaled(sideBounds.min.z);
+  place("side", eastSideX, 0);
+  place("side", northSideX, northSideZ);
 
   return { root, surfaceY, scale: ROAD_SCALE };
 }
