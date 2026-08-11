@@ -91,7 +91,11 @@ export class TaxiDrivingSystem {
       const highSpeedSensitivity = 1 - speedRatio * 0.55;
       const movementFactor = Math.min(speedMagnitude / 2, 1);
       const reverseFactor = this.speed < 0 ? -1 : 1;
-      this.taxi.rotation.y += input.steering
+      // The taxi asset faces +Z, while the follow camera is behind it on -Z.
+      // In this view, Three.js positive Y rotation moves +Z toward screen-left,
+      // so the vehicle turn sign is opposite to the input's left/right sign.
+      const vehicleTurnDirection = -input.steering;
+      this.taxi.rotation.y += vehicleTurnDirection
         * this.steeringRate
         * highSpeedSensitivity
         * movementFactor
