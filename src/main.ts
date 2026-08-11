@@ -6,6 +6,7 @@ import { validateTaxiAsset, TaxiAssetValidationError } from "./core/assets/valid
 import { TaxiDrivingSystem } from "./core/driving/TaxiDrivingSystem";
 import { InputController } from "./core/input/InputController";
 import { createRenderer, RendererInitializationError } from "./core/renderer/createRenderer";
+import { createRoadLayout } from "./core/roads/createRoadLayout";
 import { createCamera, createScene } from "./core/scene/createScene";
 import { resizeViewport } from "./core/scene/resizeViewport";
 
@@ -44,17 +45,22 @@ function startApplication(container: HTMLElement): () => void {
   let taxiDriving: TaxiDrivingSystem | undefined;
   let followCamera: FollowCamera | undefined;
 
-  void assetLoader.loadGltf("vehicles/player/taxi.glb")
-    .then((gltf) => {
-      const report = validateTaxiAsset(gltf);
-      const taxi = gltf.scene;
+  void Promise.all([
+    createRoadLayout(assetLoader),
+    assetLoader.loadGltf("vehicles/player/taxi.glb"),
+  ])
+    .then(([roadLayout, taxiGltf]) => {
+      const taxiReport = validateTaxiAsset(taxiGltf);
+      scene.add(roadLayout.root);
+
+      const taxi = taxiGltf.scene;
       taxi.name = "PlayerTaxi";
-      taxi.position.y = -report.bounds.min.y;
+      taxi.position.set(0, roadLayout.surfaceY - taxiReport.bounds.min.y, 0);
       scene.add(taxi);
 
       taxiDriving = new TaxiDrivingSystem(taxi, {
-        groundY: 0,
-        groundOffset: -report.bounds.min.y,
+        groundY: roadLayout.surfaceY,
+        groundOffset: -taxiReport.bounds.min.y,
       });
       followCamera = new FollowCamera(camera, taxi);
       followCamera.snap();
@@ -62,9 +68,9 @@ function startApplication(container: HTMLElement): () => void {
     .catch((error: unknown) => {
       const message = error instanceof TaxiAssetValidationError || error instanceof Error
         ? error.message
-        : "The player taxi asset could not be loaded or validated.";
+        : "The road test area or player taxi could not be loaded.";
 
-      console.error("Player taxi asset validation failed.", error);
+      console.error("Road test area startup failed.", error);
       showStartupError(message);
     });
 
