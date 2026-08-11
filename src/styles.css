@@ -84,6 +84,56 @@ canvas {
   color: #101820;
 }
 
+.road-inspection-panel {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
+  width: min(34rem, calc(100% - 2rem));
+  max-height: calc(100% - 2rem);
+  overflow: auto;
+  padding: 1rem;
+  border: 1px solid rgb(255 255 255 / 25%);
+  border-radius: 0.75rem;
+  background: rgb(16 24 32 / 88%);
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 28%);
+  color: #f7f3ea;
+}
+
+.road-inspection-panel h1 {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+.road-inspection-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.road-inspection-panel__actions button {
+  padding: 0.4rem 0.55rem;
+  border: 1px solid rgb(255 255 255 / 30%);
+  border-radius: 0.4rem;
+  color: #f7f3ea;
+  background: rgb(255 255 255 / 8%);
+  font: inherit;
+  font-size: 0.75rem;
+}
+
+.road-inspection-panel__actions button.is-active {
+  border-color: #ffe066;
+  color: #101820;
+  background: #ffe066;
+}
+
+.road-inspection-panel__report {
+  margin: 0;
+  white-space: pre-wrap;
+  font: 0.72rem/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
 .startup-error {
   display: grid;
   min-height: 100%;

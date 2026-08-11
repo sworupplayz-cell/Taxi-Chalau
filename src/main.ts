@@ -7,6 +7,7 @@ import { TaxiDrivingSystem } from "./core/driving/TaxiDrivingSystem";
 import { InputController } from "./core/input/InputController";
 import { createRenderer, RendererInitializationError } from "./core/renderer/createRenderer";
 import { createRoadLayout } from "./core/roads/createRoadLayout";
+import { startRoadAssetInspection } from "./core/roads/RoadAssetInspection";
 import { createCamera, createScene } from "./core/scene/createScene";
 import { resizeViewport } from "./core/scene/resizeViewport";
 
@@ -116,7 +117,10 @@ function startApplication(container: HTMLElement): () => void {
 }
 
 try {
-  const stopApplication = startApplication(app);
+  const isRoadInspectionMode = new URLSearchParams(window.location.search).get("mode") === "road-inspection";
+  const stopApplication = isRoadInspectionMode
+    ? startRoadAssetInspection(app)
+    : startApplication(app);
   window.addEventListener("beforeunload", stopApplication, { once: true });
 } catch (error) {
   const message = error instanceof RendererInitializationError
