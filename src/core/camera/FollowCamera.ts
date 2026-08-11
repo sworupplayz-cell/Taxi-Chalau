@@ -15,6 +15,8 @@ export class FollowCamera {
   private readonly lookAtOffset = new THREE.Vector3();
   private readonly desiredPosition = new THREE.Vector3();
   private readonly desiredTarget = new THREE.Vector3();
+  private readonly previousQuaternion = new THREE.Quaternion();
+  private readonly desiredQuaternion = new THREE.Quaternion();
 
   public constructor(
     camera: THREE.PerspectiveCamera,
@@ -38,11 +40,15 @@ export class FollowCamera {
 
     const smoothing = 1 - Math.exp(-7 * Math.min(Math.max(deltaSeconds, 0), 0.05));
     this.camera.position.lerp(this.desiredPosition, smoothing);
+
+    this.previousQuaternion.copy(this.camera.quaternion);
     this.camera.lookAt(this.desiredTarget);
+    this.desiredQuaternion.copy(this.camera.quaternion);
+    this.camera.quaternion.copy(this.previousQuaternion).slerp(this.desiredQuaternion, smoothing);
   }
 
   private calculateDesiredTransform(): void {
     this.desiredPosition.copy(this.offset).applyQuaternion(this.target.quaternion).add(this.target.position);
-    this.desiredTarget.copy(this.target.position).add(this.lookAtOffset);
+    this.desiredTarget.copy(this.lookAtOffset).applyQuaternion(this.target.quaternion).add(this.target.position);
   }
 }

@@ -63,8 +63,8 @@ function startApplication(container: HTMLElement): () => void {
         groundOffset: -taxiReport.bounds.min.y,
       });
       followCamera = new FollowCamera(camera, taxi, {
-        offset: new THREE.Vector3(0, 10, -0.1),
-        lookAtOffset: new THREE.Vector3(0, 0, 0),
+        offset: new THREE.Vector3(0, 4.5, -8),
+        lookAtOffset: new THREE.Vector3(0, 0.8, 2),
       });
       followCamera.snap();
     })
