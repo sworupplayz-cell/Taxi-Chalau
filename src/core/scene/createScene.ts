@@ -28,8 +28,6 @@ export function createScene(): THREE.Scene {
 }
 
 export function createCamera(aspectRatio: number): THREE.PerspectiveCamera {
-  const camera = new THREE.PerspectiveCamera(55, aspectRatio, 0.1, 200);
-  camera.position.set(4.6, 3.4, 6.2);
-  camera.lookAt(0, 0.6, 0);
-  return camera;
+  // Pose and orientation are owned exclusively by FollowCamera.
+  return new THREE.PerspectiveCamera(55, aspectRatio, 0.1, 200);
 }

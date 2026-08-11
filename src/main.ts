@@ -44,6 +44,7 @@ function startApplication(container: HTMLElement): () => void {
 
   let taxiDriving: TaxiDrivingSystem | undefined;
   let followCamera: FollowCamera | undefined;
+  let cameraReady = false;
 
   void Promise.all([
     createRoadLayout(assetLoader),
@@ -67,6 +68,7 @@ function startApplication(container: HTMLElement): () => void {
         lookAtOffset: new THREE.Vector3(0, 0.8, 2),
       });
       followCamera.snap();
+      cameraReady = true;
     })
     .catch((error: unknown) => {
       const message = error instanceof TaxiAssetValidationError || error instanceof Error
@@ -81,10 +83,14 @@ function startApplication(container: HTMLElement): () => void {
   const renderFrame = (): void => {
     animationFrame = window.requestAnimationFrame(renderFrame);
     const deltaSeconds = clock.getDelta();
-    const input = inputController.sync();
 
-    taxiDriving?.update(input, deltaSeconds);
-    followCamera?.update(deltaSeconds);
+    if (!cameraReady || !taxiDriving || !followCamera) {
+      return;
+    }
+
+    const input = inputController.sync();
+    taxiDriving.update(input, deltaSeconds);
+    followCamera.update(deltaSeconds);
     renderer.render(scene, camera);
   };
 
