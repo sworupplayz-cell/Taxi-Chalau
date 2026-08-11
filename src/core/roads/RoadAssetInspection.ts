@@ -4,6 +4,9 @@ import { createRenderer } from "../renderer/createRenderer";
 import { createScene } from "../scene/createScene";
 import { ROAD_SCALE } from "./createRoadLayout";
 
+const INSPECTION_SCALE = 1;
+const INSPECTION_VIEW_SIZE = 4.5;
+
 const ROAD_ASSETS = [
   { key: "straight", label: "road-straight.glb", path: "environment/roads/road-straight.glb" },
   { key: "curve", label: "road-curve.glb", path: "environment/roads/road-curve.glb" },
@@ -13,9 +16,10 @@ const ROAD_ASSETS = [
 ] as const;
 
 type RoadAssetKey = (typeof ROAD_ASSETS)[number]["key"];
-type ConnectionEdge = "left" | "right" | "bottom" | "top";
+type ConnectionEdge = "north" | "south" | "east" | "west";
 
 interface EdgeInterval {
+  readonly coordinate: number;
   readonly min: number;
   readonly max: number;
   readonly width: number;
@@ -37,11 +41,6 @@ interface RoadAssetReport {
   readonly scaledDimensions: THREE.Vector3;
   readonly pavement: PavementReport;
   readonly sameAxisSpacing: { x: number | undefined; z: number | undefined };
-}
-
-interface LoadedRoadAsset {
-  readonly model: THREE.Object3D;
-  readonly report: RoadAssetReport;
 }
 
 function hasLoadedTexture(material: THREE.Material): boolean {
@@ -73,21 +72,18 @@ function validateLoadedModel(label: string, model: THREE.Object3D): void {
   }
 }
 
-function mergeIntervals(intervals: Array<[number, number]>): EdgeInterval | undefined {
+function mergeIntervals(
+  intervals: Array<[number, number]>,
+  coordinate: number,
+): EdgeInterval | undefined {
   if (intervals.length === 0) {
     return undefined;
   }
 
   intervals.sort((left, right) => left[0] - right[0]);
-  let min = intervals[0][0];
-  let max = intervals[0][1];
-
-  for (let index = 1; index < intervals.length; index += 1) {
-    min = Math.min(min, intervals[index][0]);
-    max = Math.max(max, intervals[index][1]);
-  }
-
-  return { min, max, width: max - min };
+  const min = intervals[0][0];
+  const max = intervals[intervals.length - 1][1];
+  return { coordinate, min, max, width: max - min };
 }
 
 function measureVisiblePavement(model: THREE.Object3D): PavementReport {
@@ -128,15 +124,16 @@ function measureVisiblePavement(model: THREE.Object3D): PavementReport {
     throw new Error("Visible pavement surface could not be measured.");
   }
 
+  const fullBounds = new THREE.Box3().setFromObject(model);
   let minX = Number.POSITIVE_INFINITY;
   let maxX = Number.NEGATIVE_INFINITY;
   let minZ = Number.POSITIVE_INFINITY;
   let maxZ = Number.NEGATIVE_INFINITY;
   const edgePoints: Record<ConnectionEdge, Array<[number, number]>> = {
-    left: [],
-    right: [],
-    bottom: [],
-    top: [],
+    north: [],
+    south: [],
+    east: [],
+    west: [],
   };
 
   model.traverse((object) => {
@@ -151,18 +148,7 @@ function measureVisiblePavement(model: THREE.Object3D): PavementReport {
       return;
     }
 
-    const allX: number[] = [];
-    const allZ: number[] = [];
-    for (let vertex = 0; vertex < position.count; vertex += 1) {
-      allX.push(position.getX(vertex));
-      allZ.push(position.getZ(vertex));
-    }
-    const fullMinX = Math.min(...allX);
-    const fullMaxX = Math.max(...allX);
-    const fullMinZ = Math.min(...allZ);
-    const fullMaxZ = Math.max(...allZ);
     const triangleCount = index ? index.count / 3 : position.count / 3;
-
     for (let triangle = 0; triangle < triangleCount; triangle += 1) {
       const ids = index
         ? [index.getX(triangle * 3), index.getX(triangle * 3 + 1), index.getX(triangle * 3 + 2)]
@@ -190,28 +176,29 @@ function measureVisiblePavement(model: THREE.Object3D): PavementReport {
       });
 
       const edgeTolerance = 0.0001;
-      if (points.some((point) => Math.abs(point.x - fullMinX) < edgeTolerance)) {
-        edgePoints.left.push([Math.min(...points.map((point) => point.z)), Math.max(...points.map((point) => point.z))]);
+      const triangleX = points.map((point) => point.x);
+      const triangleZ = points.map((point) => point.z);
+      if (points.some((point) => Math.abs(point.z - fullBounds.max.z) < edgeTolerance)) {
+        edgePoints.north.push([Math.min(...triangleX), Math.max(...triangleX)]);
       }
-      if (points.some((point) => Math.abs(point.x - fullMaxX) < edgeTolerance)) {
-        edgePoints.right.push([Math.min(...points.map((point) => point.z)), Math.max(...points.map((point) => point.z))]);
+      if (points.some((point) => Math.abs(point.z - fullBounds.min.z) < edgeTolerance)) {
+        edgePoints.south.push([Math.min(...triangleX), Math.max(...triangleX)]);
       }
-      if (points.some((point) => Math.abs(point.z - fullMinZ) < edgeTolerance)) {
-        edgePoints.bottom.push([Math.min(...points.map((point) => point.x)), Math.max(...points.map((point) => point.x))]);
+      if (points.some((point) => Math.abs(point.x - fullBounds.max.x) < edgeTolerance)) {
+        edgePoints.east.push([Math.min(...triangleZ), Math.max(...triangleZ)]);
       }
-      if (points.some((point) => Math.abs(point.z - fullMaxZ) < edgeTolerance)) {
-        edgePoints.top.push([Math.min(...points.map((point) => point.x)), Math.max(...points.map((point) => point.x))]);
+      if (points.some((point) => Math.abs(point.x - fullBounds.min.x) < edgeTolerance)) {
+        edgePoints.west.push([Math.min(...triangleZ), Math.max(...triangleZ)]);
       }
     }
   });
 
-  const edges: Partial<Record<ConnectionEdge, EdgeInterval>> = {};
-  (Object.keys(edgePoints) as ConnectionEdge[]).forEach((edge) => {
-    const interval = mergeIntervals(edgePoints[edge]);
-    if (interval) {
-      edges[edge] = interval;
-    }
-  });
+  const edges: Partial<Record<ConnectionEdge, EdgeInterval>> = {
+    north: mergeIntervals(edgePoints.north, fullBounds.max.z),
+    south: mergeIntervals(edgePoints.south, fullBounds.min.z),
+    east: mergeIntervals(edgePoints.east, fullBounds.max.x),
+    west: mergeIntervals(edgePoints.west, fullBounds.min.x),
+  };
 
   if (![minX, maxX, minZ, maxZ].every(Number.isFinite)) {
     throw new Error("Visible pavement bounds could not be measured.");
@@ -228,8 +215,6 @@ function makeReport(
   const fullBounds = new THREE.Box3().setFromObject(model);
   const fullDimensions = fullBounds.getSize(new THREE.Vector3());
   const pavement = measureVisiblePavement(model);
-  const pavementWidth = pavement.maxX - pavement.minX;
-  const pavementLength = pavement.maxZ - pavement.minZ;
 
   return {
     key,
@@ -238,8 +223,12 @@ function makeReport(
     scaledDimensions: fullDimensions.clone().multiplyScalar(ROAD_SCALE),
     pavement,
     sameAxisSpacing: {
-      x: pavement.edges.left && pavement.edges.right ? pavementWidth : undefined,
-      z: pavement.edges.bottom && pavement.edges.top ? pavementLength : undefined,
+      x: pavement.edges.east && pavement.edges.west
+        ? pavement.maxX - pavement.minX
+        : undefined,
+      z: pavement.edges.north && pavement.edges.south
+        ? pavement.maxZ - pavement.minZ
+        : undefined,
     },
   };
 }
@@ -248,21 +237,21 @@ function formatNumber(value: number): string {
   return value.toFixed(3);
 }
 
-function formatInterval(interval: EdgeInterval | undefined): string {
-  if (!interval) {
+function formatEdge(edge: EdgeInterval | undefined): string {
+  if (!edge) {
     return "none";
   }
-  return `[${formatNumber(interval.min)}, ${formatNumber(interval.max)}] width ${formatNumber(interval.width)}`;
+  return `coord ${formatNumber(edge.coordinate)}, span [${formatNumber(edge.min)}, ${formatNumber(edge.max)}], width ${formatNumber(edge.width)}`;
 }
 
 function reportText(report: RoadAssetReport): string {
   const edges = report.pavement.edges;
-  const connectionEdges = (Object.keys(edges) as ConnectionEdge[])
-    .filter((edge) => edges[edge])
-    .map((edge) => `${edge} ${formatInterval(edges[edge])}`)
-    .join("\n  ");
-  const spacingX = report.sameAxisSpacing.x === undefined ? "not applicable" : `${formatNumber(report.sameAxisSpacing.x)} source / ${formatNumber(report.sameAxisSpacing.x * ROAD_SCALE)} current`;
-  const spacingZ = report.sameAxisSpacing.z === undefined ? "not applicable" : `${formatNumber(report.sameAxisSpacing.z)} source / ${formatNumber(report.sameAxisSpacing.z * ROAD_SCALE)} current`;
+  const spacingX = report.sameAxisSpacing.x === undefined
+    ? "not applicable"
+    : `${formatNumber(report.sameAxisSpacing.x)} source / ${formatNumber(report.sameAxisSpacing.x * ROAD_SCALE)} current`;
+  const spacingZ = report.sameAxisSpacing.z === undefined
+    ? "not applicable"
+    : `${formatNumber(report.sameAxisSpacing.z)} source / ${formatNumber(report.sameAxisSpacing.z * ROAD_SCALE)} current`;
 
   return [
     `Asset: ${report.label}`,
@@ -270,9 +259,12 @@ function reportText(report: RoadAssetReport): string {
     `Full dimensions: ${report.fullDimensions.toArray().map(formatNumber).join(" × ")} source / ${report.scaledDimensions.toArray().map(formatNumber).join(" × ")} at current scale ${ROAD_SCALE}`,
     `Visible pavement bounds: X [${formatNumber(report.pavement.minX)}, ${formatNumber(report.pavement.maxX)}], Z [${formatNumber(report.pavement.minZ)}, ${formatNumber(report.pavement.maxZ)}] source units`,
     `Visible pavement Y: ${formatNumber(report.pavement.y)} source / ${formatNumber(report.pavement.y * ROAD_SCALE)} current`,
-    `Pavement dimensions: ${formatNumber(report.pavement.maxX - report.pavement.minX)} × ${formatNumber(report.pavement.maxZ - report.pavement.minZ)} source units`,
-    `Pavement-touch connection candidates:\n  ${connectionEdges || "none"}`,
-    `Same-axis center spacing from visible pavement: X ${spacingX}; Z ${spacingZ}`,
+    "Connection edge coordinates and usable widths:",
+    `  north: ${formatEdge(edges.north)}`,
+    `  south: ${formatEdge(edges.south)}`,
+    `  east:  ${formatEdge(edges.east)}`,
+    `  west:  ${formatEdge(edges.west)}`,
+    `Recommended same-axis center spacing: X ${spacingX}; Z ${spacingZ}`,
     "Yellow outline: visible pavement boundary. Gold box: full model bounds. Axes: local origin and X/Y/Z.",
   ].join("\n");
 }
@@ -280,7 +272,14 @@ function reportText(report: RoadAssetReport): string {
 function createInspectionCamera(container: HTMLElement): THREE.OrthographicCamera {
   const aspect = Math.max(container.clientWidth || window.innerWidth, 1)
     / Math.max(container.clientHeight || window.innerHeight, 1);
-  const camera = new THREE.OrthographicCamera(-aspect * 2, aspect * 2, 2, -2, 0.1, 100);
+  const camera = new THREE.OrthographicCamera(
+    -INSPECTION_VIEW_SIZE * aspect / 2,
+    INSPECTION_VIEW_SIZE * aspect / 2,
+    INSPECTION_VIEW_SIZE / 2,
+    -INSPECTION_VIEW_SIZE / 2,
+    0.1,
+    100,
+  );
   camera.position.set(0, 20, 0);
   camera.up.set(0, 0, -1);
   camera.lookAt(0, 0, 0);
@@ -288,6 +287,9 @@ function createInspectionCamera(container: HTMLElement): THREE.OrthographicCamer
 }
 
 export function startRoadAssetInspection(container: HTMLElement): () => void {
+  const params = new URLSearchParams(window.location.search);
+  const requestedKey = params.get("asset") as RoadAssetKey | null;
+  const selectedAsset = ROAD_ASSETS.find((asset) => asset.key === requestedKey) ?? ROAD_ASSETS[0];
   const scene = createScene();
   const renderer = createRenderer(container);
   const camera = createInspectionCamera(container);
@@ -299,120 +301,87 @@ export function startRoadAssetInspection(container: HTMLElement): () => void {
   panel.className = "road-inspection-panel";
   panel.setAttribute("aria-label", "Road asset inspection diagnostics");
   const title = document.createElement("h1");
-  title.textContent = "Road asset inspection";
+  title.textContent = `Road asset inspection — ${selectedAsset.label}`;
   const actions = document.createElement("div");
   actions.className = "road-inspection-panel__actions";
   const reportElement = document.createElement("pre");
   reportElement.className = "road-inspection-panel__report";
-  reportElement.textContent = "Loading road assets…";
+  reportElement.textContent = "Loading one road asset…";
   panel.append(title, actions, reportElement);
   container.append(panel);
-
-  const loadedAssets: LoadedRoadAsset[] = [];
-  let activeIndex = 0;
-  let viewSize = 4;
-  let ready = false;
 
   const resize = (): void => {
     const width = Math.max(container.clientWidth || window.innerWidth, 1);
     const height = Math.max(container.clientHeight || window.innerHeight, 1);
     const aspect = width / height;
-    camera.left = -viewSize * aspect / 2;
-    camera.right = viewSize * aspect / 2;
-    camera.top = viewSize / 2;
-    camera.bottom = -viewSize / 2;
+    camera.left = -INSPECTION_VIEW_SIZE * aspect / 2;
+    camera.right = INSPECTION_VIEW_SIZE * aspect / 2;
+    camera.top = INSPECTION_VIEW_SIZE / 2;
+    camera.bottom = -INSPECTION_VIEW_SIZE / 2;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height, false);
   };
 
-  const showActiveAsset = (): void => {
-    const active = loadedAssets[activeIndex];
-    if (!active) {
-      return;
-    }
-
-    inspectionRoot.clear();
-    diagnosticsRoot.clear();
-    inspectionRoot.add(active.model);
-
-    active.model.position.set(0, 0, 0);
-    active.model.rotation.set(0, 0, 0);
-    active.model.scale.setScalar(1);
-    active.model.updateMatrixWorld(true);
-
-    const fullBounds = new THREE.Box3().setFromObject(active.model);
-    const fullSize = fullBounds.getSize(new THREE.Vector3());
-    const pavementSize = new THREE.Vector3(
-      active.report.pavement.maxX - active.report.pavement.minX,
-      0,
-      active.report.pavement.maxZ - active.report.pavement.minZ,
-    );
-    viewSize = Math.max(2.5, Math.max(fullSize.x, fullSize.z, pavementSize.x, pavementSize.z) * 1.8);
-
-    diagnosticsRoot.add(new THREE.AxesHelper(Math.max(fullSize.x, fullSize.z, 1) * 0.75));
-    diagnosticsRoot.add(new THREE.Box3Helper(fullBounds, 0xffcc66));
-
-    const boundaryY = active.report.pavement.y + 0.002;
-    const boundary = new THREE.LineLoop(
-      new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(active.report.pavement.minX, boundaryY, active.report.pavement.minZ),
-        new THREE.Vector3(active.report.pavement.maxX, boundaryY, active.report.pavement.minZ),
-        new THREE.Vector3(active.report.pavement.maxX, boundaryY, active.report.pavement.maxZ),
-        new THREE.Vector3(active.report.pavement.minX, boundaryY, active.report.pavement.maxZ),
-      ]),
-      new THREE.LineBasicMaterial({ color: 0xffe066 }),
-    );
-    diagnosticsRoot.add(boundary);
-
-    camera.position.set(0, Math.max(10, fullSize.y + 8), 0);
-    camera.up.set(0, 0, -1);
-    camera.lookAt(0, 0, 0);
-    resize();
-    reportElement.textContent = reportText(active.report);
-    Array.from(actions.children).forEach((child, index) => {
-      child.classList.toggle("is-active", index === activeIndex);
-      child.setAttribute("aria-pressed", String(index === activeIndex));
-    });
+  const navigateToAsset = (key: RoadAssetKey): void => {
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set("mode", "road-inspection");
+    nextUrl.searchParams.set("asset", key);
+    window.location.href = nextUrl.toString();
   };
 
-  const selectAsset = (index: number): void => {
-    if (index < 0 || index >= loadedAssets.length) {
-      return;
-    }
-    activeIndex = index;
-    showActiveAsset();
-  };
+  ROAD_ASSETS.forEach((asset, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = `${index + 1}. ${asset.label}`;
+    button.classList.toggle("is-active", asset.key === selectedAsset.key);
+    button.setAttribute("aria-pressed", String(asset.key === selectedAsset.key));
+    button.addEventListener("click", () => navigateToAsset(asset.key));
+    actions.append(button);
+  });
 
   const keyHandler = (event: KeyboardEvent): void => {
     const number = Number(event.key);
-    if (Number.isInteger(number) && number >= 1 && number <= loadedAssets.length) {
-      selectAsset(number - 1);
-    } else if (event.key === "ArrowRight") {
-      selectAsset((activeIndex + 1) % loadedAssets.length);
-    } else if (event.key === "ArrowLeft") {
-      selectAsset((activeIndex - 1 + loadedAssets.length) % loadedAssets.length);
+    if (Number.isInteger(number) && number >= 1 && number <= ROAD_ASSETS.length) {
+      navigateToAsset(ROAD_ASSETS[number - 1].key);
     }
   };
   window.addEventListener("keydown", keyHandler);
   window.addEventListener("resize", resize, { passive: true });
 
   const assetLoader = new AssetLoader();
-  void Promise.all(ROAD_ASSETS.map(async (asset) => {
-    const gltf = await assetLoader.loadGltf(asset.path);
-    validateLoadedModel(asset.label, gltf.scene);
-    const report = makeReport(asset.key, asset.label, gltf.scene);
-    loadedAssets.push({ model: gltf.scene, report });
-  }))
-    .then(() => {
-      loadedAssets.sort((left, right) => ROAD_ASSETS.findIndex((asset) => asset.key === left.report.key) - ROAD_ASSETS.findIndex((asset) => asset.key === right.report.key));
-      ROAD_ASSETS.forEach((asset, index) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.textContent = `${index + 1}. ${asset.label}`;
-        button.addEventListener("click", () => selectAsset(index));
-        actions.append(button);
-      });
-      showActiveAsset();
+  let ready = false;
+  void assetLoader.loadGltf(selectedAsset.path)
+    .then((gltf) => {
+      validateLoadedModel(selectedAsset.label, gltf.scene);
+      const report = makeReport(selectedAsset.key, selectedAsset.label, gltf.scene);
+      inspectionRoot.clear();
+      diagnosticsRoot.clear();
+
+      gltf.scene.position.set(0, 0, 0);
+      gltf.scene.rotation.set(0, 0, 0);
+      gltf.scene.scale.setScalar(INSPECTION_SCALE);
+      inspectionRoot.add(gltf.scene);
+      gltf.scene.updateMatrixWorld(true);
+
+      const fullBounds = new THREE.Box3().setFromObject(gltf.scene);
+      diagnosticsRoot.add(new THREE.AxesHelper(Math.max(fullBounds.max.x - fullBounds.min.x, fullBounds.max.z - fullBounds.min.z, 1) * 0.75));
+      diagnosticsRoot.add(new THREE.Box3Helper(fullBounds, 0xffcc66));
+
+      const boundaryY = report.pavement.y + 0.002;
+      diagnosticsRoot.add(new THREE.LineLoop(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(report.pavement.minX, boundaryY, report.pavement.minZ),
+          new THREE.Vector3(report.pavement.maxX, boundaryY, report.pavement.minZ),
+          new THREE.Vector3(report.pavement.maxX, boundaryY, report.pavement.maxZ),
+          new THREE.Vector3(report.pavement.minX, boundaryY, report.pavement.maxZ),
+        ]),
+        new THREE.LineBasicMaterial({ color: 0xffe066 }),
+      ));
+
+      camera.position.set(0, 20, 0);
+      camera.up.set(0, 0, -1);
+      camera.lookAt(0, 0, 0);
+      reportElement.textContent = reportText(report);
       ready = true;
     })
     .catch((error: unknown) => {

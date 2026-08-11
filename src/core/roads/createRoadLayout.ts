@@ -6,7 +6,6 @@ export const ROAD_SCALE = 2;
 const ROAD_ASSETS = {
   straight: "environment/roads/road-straight.glb",
   intersection: "environment/roads/road-intersection.glb",
-  side: "environment/roads/road-side.glb",
 } as const;
 
 type RoadAssetName = keyof typeof ROAD_ASSETS;
@@ -15,8 +14,6 @@ export interface RoadLayout {
   readonly root: THREE.Group;
   readonly surfaceY: number;
   readonly scale: number;
-  readonly streetSpacingX: number;
-  readonly streetSpacingZ: number;
 }
 
 interface PavementSurface {
@@ -153,88 +150,43 @@ export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLa
     }),
   );
 
-  const getSource = (name: RoadAssetName): THREE.Object3D => {
-    const source = loadedModels.get(name);
-    if (!source) {
-      throw new Error(`Road asset ${name} was not loaded.`);
-    }
-    return source;
-  };
+  const straightSource = loadedModels.get("straight");
+  const intersectionSource = loadedModels.get("intersection");
+  if (!straightSource || !intersectionSource) {
+    throw new Error("The road junction assets were not loaded.");
+  }
 
-  const straightSource = getSource("straight");
-  const intersectionSource = getSource("intersection");
-  const sideSource = getSource("side");
   const straightPavement = measureVisiblePavement(straightSource);
   const intersectionPavement = measureVisiblePavement(intersectionSource);
-  const sidePavement = measureVisiblePavement(sideSource);
-
+  const intersectionBounds = new THREE.Box3().setFromObject(intersectionSource);
   if (Math.abs(straightPavement.y - intersectionPavement.y) > 0.0001) {
     throw new Error("Straight and intersection road surfaces are not level.");
   }
 
-  const surfaceY = straightPavement.y * ROAD_SCALE;
-  const streetSpacingX = (
-    intersectionPavement.maxX
-    - straightPavement.minZ
-    + straightPavement.maxZ
-    - intersectionPavement.minX
-  ) * ROAD_SCALE;
-  const streetSpacingZ = (
-    intersectionPavement.maxZ
-    - straightPavement.minZ
-    + straightPavement.maxZ
-    - intersectionPavement.minZ
-  ) * ROAD_SCALE;
-  const gridXCoordinates = [-streetSpacingX, 0, streetSpacingX];
-  const gridZCoordinates = [-streetSpacingZ, 0, streetSpacingZ];
-  const horizontalConnectorCoordinates = [
-    (intersectionPavement.minX - straightPavement.maxZ) * ROAD_SCALE,
-    (intersectionPavement.maxX - straightPavement.minZ) * ROAD_SCALE,
-  ];
-  const verticalConnectorCoordinates = [
-    (intersectionPavement.minZ - straightPavement.maxZ) * ROAD_SCALE,
-    (intersectionPavement.maxZ - straightPavement.minZ) * ROAD_SCALE,
-  ];
   const root = new THREE.Group();
-  root.name = "ModularRoadGrid";
-
-  const place = (name: RoadAssetName, x: number, z: number, rotationY = 0): void => {
-    const instance = getSource(name).clone(true);
+  root.name = "RoadJunctionTestArea";
+  const place = (source: THREE.Object3D, x: number, z: number, rotationY = 0): void => {
+    const instance = source.clone(true);
     instance.position.set(x, 0, z);
     instance.rotation.y = rotationY;
     instance.scale.setScalar(ROAD_SCALE);
     root.add(instance);
   };
 
-  // Three parallel horizontal streets, with three intersections per street.
-  gridZCoordinates.forEach((z) => {
-    gridXCoordinates.forEach((x) => place("intersection", x, z));
-    horizontalConnectorCoordinates.forEach((x) => place("straight", x, z, Math.PI / 2));
-  });
+  // The intersection remains in its authored orientation: north, south, east.
+  place(intersectionSource, 0, 0);
 
-  // Three parallel vertical streets, using the measured asymmetric connector edges.
-  gridXCoordinates.forEach((x) => {
-    verticalConnectorCoordinates.forEach((z) => place("straight", x, z));
-  });
+  // Align each straight's visible pavement edge with the matching intersection edge.
+  const northZ = (intersectionBounds.max.z - straightPavement.minZ) * ROAD_SCALE;
+  const southZ = (intersectionBounds.min.z - straightPavement.maxZ) * ROAD_SCALE;
+  const eastX = (intersectionBounds.max.x - straightPavement.minZ) * ROAD_SCALE;
+  place(straightSource, 0, northZ);
+  place(straightSource, 0, southZ);
+  place(straightSource, eastX, 0, Math.PI / 2);
 
-  // Side pieces are kept to the outside perimeter and aligned from their
-  // measured visible pavement bounds. Interior block edges remain open lots.
-  const roadHalfWidth = (straightPavement.maxX - straightPavement.minX) * ROAD_SCALE / 2;
-  const sideHalfWidth = (sidePavement.maxX - sidePavement.minX) * ROAD_SCALE / 2;
-  const outerSideOffset = roadHalfWidth + sideHalfWidth;
-  const leftOuterX = gridXCoordinates[0] - outerSideOffset;
-  const rightOuterX = gridXCoordinates[2] + outerSideOffset;
-  const bottomOuterZ = gridZCoordinates[0] - outerSideOffset;
-  const topOuterZ = gridZCoordinates[2] + outerSideOffset;
-
-  verticalConnectorCoordinates.forEach((z) => {
-    place("side", leftOuterX, z);
-    place("side", rightOuterX, z);
-  });
-  horizontalConnectorCoordinates.forEach((x) => {
-    place("side", x, bottomOuterZ, Math.PI / 2);
-    place("side", x, topOuterZ, Math.PI / 2);
-  });
-
-  return { root, surfaceY, scale: ROAD_SCALE, streetSpacingX, streetSpacingZ };
+  return {
+    root,
+    surfaceY: straightPavement.y * ROAD_SCALE,
+    scale: ROAD_SCALE,
+  };
 }
