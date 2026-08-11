@@ -2,30 +2,37 @@ import * as THREE from "three";
 import { AssetLoader } from "../assets/AssetLoader";
 
 export const ROAD_SCALE = 2;
+const ROAD_CATALOG_URL = "/assets/environment/roads/road-asset-catalog.json";
 
-const ROAD_ASSETS = {
-  straight: "environment/roads/road-straight.glb",
-  crossroad: "environment/roads/road-crossroad.glb",
-} as const;
+interface CatalogConnectionEdge {
+  readonly coordinate: number;
+  readonly span: [number, number];
+  readonly width: number;
+}
 
-type RoadAssetName = keyof typeof ROAD_ASSETS;
-type ConnectionEdge = "north" | "south" | "east" | "west";
+interface CatalogAsset {
+  readonly file: string;
+  readonly path: string;
+  readonly geometryClass: string;
+  readonly loaderVerified: boolean;
+  readonly dimensionsSource: [number, number, number];
+  readonly pavement: {
+    readonly y: number | null;
+    readonly boundsXZ: [number, number, number, number] | null;
+    readonly connectionEdges: Partial<Record<"north" | "south" | "east" | "west", CatalogConnectionEdge>>;
+  };
+}
+
+interface RoadCatalog {
+  readonly assetCount: number;
+  readonly currentGameScale: number;
+  readonly assets: readonly CatalogAsset[];
+}
 
 export interface RoadLayout {
   readonly root: THREE.Group;
   readonly surfaceY: number;
   readonly scale: number;
-}
-
-interface ConnectionEdgeData {
-  readonly coordinate: number;
-  readonly min: number;
-  readonly max: number;
-}
-
-interface RoadGeometryReport {
-  readonly pavementY: number;
-  readonly edges: Partial<Record<ConnectionEdge, ConnectionEdgeData>>;
 }
 
 function hasLoadedTexture(material: THREE.Material): boolean {
@@ -37,7 +44,7 @@ function hasLoadedTexture(material: THREE.Material): boolean {
   return map instanceof THREE.Texture && map.image !== undefined;
 }
 
-function validateRoadModel(name: RoadAssetName, model: THREE.Object3D): void {
+function validateLoadedModel(name: string, model: THREE.Object3D): void {
   let meshCount = 0;
 
   model.traverse((object) => {
@@ -48,181 +55,82 @@ function validateRoadModel(name: RoadAssetName, model: THREE.Object3D): void {
     meshCount += 1;
     const materials = Array.isArray(object.material) ? object.material : [object.material];
     if (materials.some((material) => !hasLoadedTexture(material))) {
-      throw new Error(`Road asset ${name} loaded without its expected colormap texture.`);
+      throw new Error(`${name} loaded without its catalogued colormap texture.`);
     }
   });
 
   if (meshCount === 0) {
-    throw new Error(`Road asset ${name} loaded without visible geometry.`);
+    throw new Error(`${name} loaded without visible geometry.`);
   }
 }
 
-function measureRoadGeometry(model: THREE.Object3D): RoadGeometryReport {
-  let pavementY = Number.POSITIVE_INFINITY;
-  const fullBounds = new THREE.Box3().setFromObject(model);
-
-  model.traverse((object) => {
-    if (!(object instanceof THREE.Mesh)) {
-      return;
-    }
-
-    const position = object.geometry.getAttribute("position");
-    const normal = object.geometry.getAttribute("normal");
-    const index = object.geometry.index;
-    if (!position || !normal) {
-      return;
-    }
-
-    const triangleCount = index ? index.count / 3 : position.count / 3;
-    for (let triangle = 0; triangle < triangleCount; triangle += 1) {
-      const ids = index
-        ? [index.getX(triangle * 3), index.getX(triangle * 3 + 1), index.getX(triangle * 3 + 2)]
-        : [triangle * 3, triangle * 3 + 1, triangle * 3 + 2];
-      const points = ids.map((id) => ({
-        x: position.getX(id),
-        y: position.getY(id),
-        z: position.getZ(id),
-        normalY: normal.getY(id),
-      }));
-      const averageY = points.reduce((sum, point) => sum + point.y, 0) / 3;
-
-      if (
-        averageY > 0
-        && Math.max(...points.map((point) => point.y)) - Math.min(...points.map((point) => point.y)) < 0.0001
-        && points.every((point) => point.normalY > 0.9)
-      ) {
-        pavementY = Math.min(pavementY, averageY);
-      }
-    }
-  });
-
-  if (!Number.isFinite(pavementY)) {
-    throw new Error("Road pavement surface could not be measured.");
+async function loadRoadCatalog(): Promise<RoadCatalog> {
+  const response = await fetch(ROAD_CATALOG_URL);
+  if (!response.ok) {
+    throw new Error(`Road asset catalog failed to load: HTTP ${response.status}.`);
   }
 
-  const edgePoints: Record<ConnectionEdge, Array<[number, number]>> = {
-    north: [],
-    south: [],
-    east: [],
-    west: [],
-  };
+  const catalog = await response.json() as RoadCatalog;
+  if (!Array.isArray(catalog.assets) || catalog.assetCount !== catalog.assets.length) {
+    throw new Error("Road asset catalog is incomplete.");
+  }
 
-  model.traverse((object) => {
-    if (!(object instanceof THREE.Mesh)) {
-      return;
-    }
+  return catalog;
+}
 
-    const position = object.geometry.getAttribute("position");
-    const normal = object.geometry.getAttribute("normal");
-    const index = object.geometry.index;
-    if (!position || !normal) {
-      return;
-    }
-
-    const triangleCount = index ? index.count / 3 : position.count / 3;
-    for (let triangle = 0; triangle < triangleCount; triangle += 1) {
-      const ids = index
-        ? [index.getX(triangle * 3), index.getX(triangle * 3 + 1), index.getX(triangle * 3 + 2)]
-        : [triangle * 3, triangle * 3 + 1, triangle * 3 + 2];
-      const points = ids.map((id) => ({
-        x: position.getX(id),
-        y: position.getY(id),
-        z: position.getZ(id),
-        normalY: normal.getY(id),
-      }));
-      const averageY = points.reduce((sum, point) => sum + point.y, 0) / 3;
-
-      if (
-        Math.abs(averageY - pavementY) > 0.0001
-        || points.some((point) => point.normalY <= 0.9)
-      ) {
-        continue;
-      }
-
-      const xs = points.map((point) => point.x);
-      const zs = points.map((point) => point.z);
-      const edgeTolerance = 0.0001;
-      if (points.some((point) => Math.abs(point.z - fullBounds.max.z) < edgeTolerance)) {
-        edgePoints.north.push([Math.min(...xs), Math.max(...xs)]);
-      }
-      if (points.some((point) => Math.abs(point.z - fullBounds.min.z) < edgeTolerance)) {
-        edgePoints.south.push([Math.min(...xs), Math.max(...xs)]);
-      }
-      if (points.some((point) => Math.abs(point.x - fullBounds.max.x) < edgeTolerance)) {
-        edgePoints.east.push([Math.min(...zs), Math.max(...zs)]);
-      }
-      if (points.some((point) => Math.abs(point.x - fullBounds.min.x) < edgeTolerance)) {
-        edgePoints.west.push([Math.min(...zs), Math.max(...zs)]);
-      }
-    }
-  });
-
-  const edges: Partial<Record<ConnectionEdge, ConnectionEdgeData>> = {};
-  (Object.keys(edgePoints) as ConnectionEdge[]).forEach((edge) => {
-    const intervals = edgePoints[edge];
-    if (intervals.length === 0) {
-      return;
-    }
-
-    intervals.sort((left, right) => left[0] - right[0]);
-    edges[edge] = {
-      coordinate: edge === "north"
-        ? fullBounds.max.z
-        : edge === "south"
-          ? fullBounds.min.z
-          : edge === "east"
-            ? fullBounds.max.x
-            : fullBounds.min.x,
-      min: intervals[0][0],
-      max: intervals[intervals.length - 1][1],
-    };
-  });
-
-  return { pavementY, edges };
+function catalogAsset(catalog: RoadCatalog, file: string): CatalogAsset {
+  const asset = catalog.assets.find((entry) => entry.file === file);
+  if (!asset || !asset.loaderVerified) {
+    throw new Error(`Required catalogued road asset is unavailable: ${file}.`);
+  }
+  return asset;
 }
 
 export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLayout> {
-  const loaded = new Map<RoadAssetName, THREE.Object3D>();
-  await Promise.all(
-    Object.entries(ROAD_ASSETS).map(async ([name, path]) => {
-      const assetName = name as RoadAssetName;
-      const gltf = await assetLoader.loadGltf(path);
-      validateRoadModel(assetName, gltf.scene);
-      loaded.set(assetName, gltf.scene);
-    }),
-  );
+  const catalog = await loadRoadCatalog();
+  const crossroadAsset = catalogAsset(catalog, "road-crossroad.glb");
+  const straightAsset = catalogAsset(catalog, "road-straight.glb");
+  const sideAsset = catalogAsset(catalog, "road-side.glb");
 
-  const straight = loaded.get("straight");
-  const crossroad = loaded.get("crossroad");
-  if (!straight || !crossroad) {
-    throw new Error("The crossroad and straight road assets were not loaded.");
-  }
+  const [crossroadGltf, straightGltf, sideGltf] = await Promise.all([
+    assetLoader.loadGltf(crossroadAsset.path),
+    assetLoader.loadGltf(straightAsset.path),
+    assetLoader.loadGltf(sideAsset.path),
+  ]);
+  validateLoadedModel(crossroadAsset.file, crossroadGltf.scene);
+  validateLoadedModel(straightAsset.file, straightGltf.scene);
+  validateLoadedModel(sideAsset.file, sideGltf.scene);
 
-  const straightReport = measureRoadGeometry(straight);
-  const crossroadReport = measureRoadGeometry(crossroad);
-  if (Math.abs(straightReport.pavementY - crossroadReport.pavementY) > 0.0001) {
-    throw new Error("Crossroad and straight road surfaces are not level.");
+  const crossroadEdges = crossroadAsset.pavement.connectionEdges;
+  const straightEdges = straightAsset.pavement.connectionEdges;
+  const crossroadPavement = crossroadAsset.pavement.boundsXZ;
+  const straightPavement = straightAsset.pavement.boundsXZ;
+  const sidePavement = sideAsset.pavement.boundsXZ;
+  if (
+    !crossroadPavement
+    || !straightPavement
+    || !sidePavement
+    || !crossroadEdges.north
+    || !crossroadEdges.south
+    || !crossroadEdges.east
+    || !crossroadEdges.west
+    || !straightEdges.east
+    || !straightEdges.west
+    || crossroadAsset.pavement.y === null
+    || straightAsset.pavement.y === null
+    || sideAsset.pavement.y === null
+  ) {
+    throw new Error("Catalogued road connection data is incomplete for the playable grid.");
   }
-
-  const requiredEdges: ConnectionEdge[] = ["north", "south", "east", "west"];
-  if (requiredEdges.some((edge) => !crossroadReport.edges[edge])) {
-    throw new Error("The selected crossroad asset does not expose four pavement connections.");
-  }
-  const crossroadEdges = crossroadReport.edges;
-  const straightEdges = straightReport.edges;
-  if (!straightEdges.east || !straightEdges.west) {
-    throw new Error("The selected straight asset does not expose east/west pavement connections.");
-  }
-  const eastConnection = crossroadEdges.east;
-  const westConnection = crossroadEdges.west;
-  const northConnection = crossroadEdges.north;
-  const southConnection = crossroadEdges.south;
-  if (!eastConnection || !westConnection || !northConnection || !southConnection) {
-    throw new Error("The selected crossroad asset does not expose four pavement connections.");
+  if (
+    Math.abs(crossroadAsset.pavement.y - straightAsset.pavement.y) > 0.0001
+    || Math.abs(sideAsset.pavement.y - straightAsset.pavement.y) > 0.0001
+  ) {
+    throw new Error("Catalogued road surface heights are inconsistent.");
   }
 
   const root = new THREE.Group();
-  root.name = "ValidatedCrossroadTestArea";
+  root.name = "PlayableRoadGrid";
   const place = (source: THREE.Object3D, x: number, z: number, rotationY = 0): void => {
     const instance = source.clone(true);
     instance.position.set(x, 0, z);
@@ -231,31 +139,56 @@ export async function createRoadLayout(assetLoader: AssetLoader): Promise<RoadLa
     root.add(instance);
   };
 
-  place(crossroad, 0, 0);
+  // Each crossroad is separated by two straight visible-pavement tiles.
+  // The world spacing is derived from the catalogued connection coordinates.
+  const horizontalSpacing = (
+    crossroadEdges.east.coordinate - straightEdges.west.coordinate
+    + straightEdges.east.coordinate - crossroadEdges.west.coordinate
+  ) * ROAD_SCALE;
+  const verticalSpacing = (
+    crossroadEdges.north.coordinate + straightEdges.east.coordinate
+    - straightEdges.west.coordinate - crossroadEdges.south.coordinate
+  ) * ROAD_SCALE;
+  const gridX = [-horizontalSpacing, 0, horizontalSpacing];
+  const gridZ = [-verticalSpacing, 0, verticalSpacing];
+  const horizontalConnectors = [
+    (crossroadEdges.west.coordinate - straightEdges.east.coordinate) * ROAD_SCALE,
+    (crossroadEdges.east.coordinate - straightEdges.west.coordinate) * ROAD_SCALE,
+  ];
+  const verticalConnectors = [
+    (crossroadEdges.south.coordinate + straightEdges.west.coordinate) * ROAD_SCALE,
+    (crossroadEdges.north.coordinate + straightEdges.east.coordinate) * ROAD_SCALE,
+  ];
 
-  // East/west use the straight model's authored X-axis connections.
-  const eastX = (
-    eastConnection.coordinate - straightEdges.west.coordinate
-  ) * ROAD_SCALE;
-  const westX = (
-    westConnection.coordinate - straightEdges.east.coordinate
-  ) * ROAD_SCALE;
-  place(straight, eastX, 0);
-  place(straight, westX, 0);
+  gridZ.forEach((z) => {
+    gridX.forEach((x) => place(crossroadGltf.scene, x, z));
+    horizontalConnectors.forEach((x) => place(straightGltf.scene, x, z));
+  });
+  gridX.forEach((x) => {
+    verticalConnectors.forEach((z) => place(straightGltf.scene, x, z, Math.PI / 2));
+  });
 
-  // A 90-degree Y rotation turns the straight model's X-axis connections north/south.
-  const northZ = (
-    northConnection.coordinate + straightEdges.east.coordinate
-  ) * ROAD_SCALE;
-  const southZ = (
-    southConnection.coordinate + straightEdges.west.coordinate
-  ) * ROAD_SCALE;
-  place(straight, 0, northZ, Math.PI / 2);
-  place(straight, 0, southZ, Math.PI / 2);
+  // Keep edge pieces on the exposed outside perimeter only. Their offsets use
+  // the catalogue pavement widths, leaving the four interior lots open.
+  const straightWidth = straightPavement[3] - straightPavement[2];
+  const sideWidth = sidePavement[1] - sidePavement[0];
+  const outsideOffset = (straightWidth + sideWidth) * ROAD_SCALE / 2;
+  const leftSideX = gridX[0] - outsideOffset;
+  const rightSideX = gridX[2] + outsideOffset;
+  const bottomSideZ = gridZ[0] - outsideOffset;
+  const topSideZ = gridZ[2] + outsideOffset;
+  verticalConnectors.forEach((z) => {
+    place(sideGltf.scene, leftSideX, z);
+    place(sideGltf.scene, rightSideX, z);
+  });
+  horizontalConnectors.forEach((x) => {
+    place(sideGltf.scene, x, bottomSideZ, Math.PI / 2);
+    place(sideGltf.scene, x, topSideZ, Math.PI / 2);
+  });
 
   return {
     root,
-    surfaceY: straightReport.pavementY * ROAD_SCALE,
+    surfaceY: straightAsset.pavement.y * ROAD_SCALE,
     scale: ROAD_SCALE,
   };
 }
